@@ -1,0 +1,1 @@
+lichee/rtos/tools/Xuantie-900-gcc-elf-newlib-x86_64-V2.10.1.tar.gz filter=lfs diff=lfs merge=lfs -text
