@@ -1,0 +1,17 @@
+menu "HW SPINLOCK Devices"
+
+config DRIVERS_HWSPINLOCK
+	bool "enable hwspinlock driver"
+	default n
+
+config HAL_TEST_HWSPINLOCK
+	bool "enable hwspinlock hal APIS test command"
+	depends on DRIVERS_HWSPINLOCK
+	default n
+
+config HWSPINLOCK_CLK_INIT_IN_OTHER_CORE
+	bool "enable hwspinlock clk init in other core"
+	depends on DRIVERS_HWSPINLOCK
+	default n
+
+endmenu

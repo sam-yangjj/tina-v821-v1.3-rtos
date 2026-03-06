@@ -1,0 +1,8 @@
+menu "WUPIO Devices"
+
+config DRIVERS_WUPIO
+    bool "enable wupio driver"
+	depends on ARCH_SUN300IW1
+        default n
+
+endmenu

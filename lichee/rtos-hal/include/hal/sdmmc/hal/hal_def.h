@@ -1,0 +1,126 @@
+/*
+ * Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
+ *
+ * Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+ * the people's Republic of China and other countries.
+ * All Allwinner Technology Co.,Ltd. trademarks are used with permission.
+ *
+ * DISCLAIMER
+ * THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+ * IF YOU NEED TO INTEGRATE THIRD PARTY’S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+ * IN ALLWINNERS’SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+ * ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+ * ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+ * COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+ * YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY’S TECHNOLOGY.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+ * PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+ * WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+ * THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+ * OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+ * IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+ * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+ * NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+ * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+ * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+ * OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+/*
+ * Copyright (C) 2017 ALLWINNERTECH TECHNOLOGY CO., LTD. All rights reserved.
+ *
+ *  Redistribution and use in source and binary forms, with or without
+ *  modification, are permitted provided that the following conditions
+ *  are met:
+ *    1. Redistributions of source code must retain the above copyright
+ *       notice, this list of conditions and the following disclaimer.
+ *    2. Redistributions in binary form must reproduce the above copyright
+ *       notice, this list of conditions and the following disclaimer in the
+ *       documentation and/or other materials provided with the
+ *       distribution.
+ *    3. Neither the name of ALLWINNERTECH TECHNOLOGY CO., LTD. nor the names of
+ *       its contributors may be used to endorse or promote products derived
+ *       from this software without specific prior written permission.
+ *
+ *  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ *  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ *  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+ *  A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+ *  OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+ *  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+ *  LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ *  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ *  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
+#ifndef _DRIVER_CHIP_HAL_DEF_H_
+#define _DRIVER_CHIP_HAL_DEF_H_
+
+#include "chip.h"
+#include "../sys/compiler.h"
+//#include "kernel/os/os_common.h"
+#include "stdint.h"
+#include <hal_status.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+#ifdef __cplusplus
+    #define   __I     volatile             /*!< Defines 'read only' permissions                 */
+#else
+    #define   __I     volatile const       /*!< Defines 'read only' permissions                 */
+#endif
+#define     __O     volatile             /*!< Defines 'write only' permissions                */
+#define     __IO    volatile             /*!< Defines 'read / write' permissions              */
+
+
+/*
+ * Bitwise operation
+ */
+#define HAL_BIT(pos)                        (1U << (pos))
+
+#define HAL_SET_BIT(reg, mask)              ((reg) |= (mask))
+#define HAL_CLR_BIT(reg, mask)              ((reg) &= ~(mask))
+#define HAL_GET_BIT(reg, mask)              ((reg) & (mask))
+#define HAL_GET_BIT_VAL(reg, shift, vmask)  (((reg) >> (shift)) & (vmask))
+
+#define HAL_MODIFY_REG(reg, clr_mask, set_mask) \
+    ((reg) = (((reg) & (~(clr_mask))) | (set_mask)))
+
+/*
+ * Macros for accessing LSBs of a 32-bit register (little endian only)
+ */
+#define HAL_REG_32BIT(reg_addr)  (*((__IO uint32_t *)(reg_addr)))
+#define HAL_REG_16BIT(reg_addr)  (*((__IO uint16_t *)(reg_addr)))
+#define HAL_REG_8BIT(reg_addr)   (*((__IO uint8_t  *)(reg_addr)))
+
+/* Macro for counting the element number of an array */
+#define HAL_ARRAY_SIZE(a)   (sizeof((a)) / sizeof((a)[0]))
+
+/* Wait forever timeout value */
+// #define HAL_WAIT_FOREVER    OS_WAIT_FOREVER
+
+#define HAL_SIZE_T 		(unsigned long)
+#define HAL_PT_TO_U(v)		(HAL_SIZE_T(v))
+
+/*use to prinf and sscanf function to avoid compiler error*/
+#define HAL_PR_SZ_L(v)		(HAL_SIZE_T(v))
+#define HAL_PR_SZ(v)		((unsigned int)(v))
+#define HAL_PR_SZ_P(v)		((unsigned int *)(v))
+
+
+#define HAL_WMB() 		{dsb(0xf);}
+
+typedef hal_status_t HAL_Status;
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif /* _DRIVER_CHIP_HAL_DEF_H_ */

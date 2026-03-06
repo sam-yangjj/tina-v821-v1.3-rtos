@@ -1,0 +1,9 @@
+#ifndef __AW_VERSION_H_
+#define __AW_VERSION_H_
+
+#define TINA_RT_VERSION_NUMBER "V1.6.0"
+#define TINA_RT_VERSION_MAJOR 1
+#define TINA_RT_VERSION_MINOR 6
+#define TINA_RT_VERSION_BUILD 00
+
+#endif

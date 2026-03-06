@@ -1,0 +1,13 @@
+menu "RTC WATCHDOG Devices"
+
+config DRIVERS_RTC_WATCHDOG
+    bool "enable rtc watchdog driver"
+	depends on ARCH_SUN300IW1
+        default n
+
+config HAL_TEST_RTC_WATCHDOG
+    bool "enable rtc watchdog hal APIs test command"
+	depends on DRIVERS_RTC_WATCHDOG
+	default n
+
+endmenu

@@ -1,0 +1,15 @@
+menu "CCU Driver(Next Generation)"
+visible if !DRIVERS_CCMU
+
+config DRIVERS_CCU
+	bool "Enable Allwinner Clock Controller Unit Driver(Next Generation)"
+	depends on ARCH_SUN300IW1P1
+	default n if DRIVERS_CCMU
+	default y if !DRIVERS_CCMU
+
+config HAL_TEST_CCU_NG
+	bool "enable CCU hal APIs test command"
+	depends on DRIVERS_CCU
+	default n
+
+endmenu

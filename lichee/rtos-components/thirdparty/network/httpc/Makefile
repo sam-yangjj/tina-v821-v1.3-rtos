@@ -1,0 +1,2 @@
+obj-$(CONFIG_COMPONENTS_HTTPCLIENT) += httpclient/
+obj-$(CONFIG_COMPONENTS_COREHTTP_3_1_1) += coreHTTP-3.1.1/

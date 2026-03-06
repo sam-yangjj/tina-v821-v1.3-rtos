@@ -1,0 +1,7 @@
+menu "CHIPS Devices"
+
+config SUNXI_CHIPS
+    bool "enable chips devices"
+        default n
+
+endmenu

@@ -1,0 +1,172 @@
+config SENSOR_GC1054_MIPI
+	bool "use gc1054_mipi driver"
+	default n
+
+config SENSOR_GC1084_MIPI
+	bool "use gc1084_mipi driver"
+	default n
+
+config SENSOR_GC1084_8BIT_MIPI
+	bool "use gc1084_mipi 8bit"
+	depends on SENSOR_GC1084_MIPI
+	default n
+
+config SENSOR_GC1084_MIPI_USE_SAME_TWI
+	bool "use gc1084_mipi use same twi and work together"
+	depends on SENSOR_GC1084_MIPI
+	default n
+
+config SENSOR_GC2053_MIPI
+	bool "use gc2053_mipi driver"
+	default n
+
+config SENSOR_GC2053_8BIT_MIPI
+	bool "use gc2053_mipi 8bit"
+	depends on SENSOR_GC2053_MIPI
+	default n
+
+config SENSOR_GC2083_MIPI
+	bool "use gc2083_mipi driver"
+	default n
+
+config SENSOR_GC2083_MIPI_USE_1LANE
+	bool "use gc2083_mipi use 1lane when work together"
+	depends on SENSOR_GC2083_MIPI
+	default n
+
+config SENSOR_GC2083_SM_VSYNC_MODE
+	bool "use gc2083_mipi use 1lane when sm_vs mode"
+	depends on SENSOR_GC2083_MIPI_USE_1LANE
+	default n
+
+config SENSOR_GC4663_MIPI
+	bool "use gc4663_mipi driver"
+	default n
+
+config SENSOR_GC05A2_MIPI
+	bool "use gc05a2_mipi driver"
+	default n
+
+config SENSOR_IMX219_MIPI
+	bool "use imx219_mipi driver"
+	default n
+
+config SENSOR_IMX219_VERTICAL
+	bool "use imx219_mipi driver vertical parameter"
+	depends on SENSOR_IMX219_MIPI
+	default n
+
+config SENSOR_SC2355_MIPI
+	bool "use sc2355_mipi driver"
+	default n
+
+config SENSOR_SC2331_MIPI
+	bool "use sc2331_mipi driver"
+	default n
+
+config SENSOR_SC2336_MIPI
+	bool "use sc2336_mipi driver"
+	default n
+
+config SENSOR_SC2337P_MIPI
+	bool "use sc2337p_mipi driver"
+	default n
+
+config SENSOR_SC2337P_SYNCHR_OUTPUT
+	depends on SENSOR_SC2337P_MIPI
+	bool "use sc2337p syncchr output"
+	default n
+
+config SENSOR_SC2337P_MULTIPLEXES_RESET
+	depends on SENSOR_SC2337P_MIPI
+	bool "sc2337p multiplexes RESET"
+	default n
+
+choice
+	depends on SENSOR_SC2337P_SYNCHR_OUTPUT
+	prompt "sc2337p synchr output"
+
+config SENSOR_SC2337P_MASTER_SLAVE_SYNCHR_OUTPUT
+	bool "sc2337p set master slave synchr output"
+
+config SENSOR_SC2337P_MASTER_SYNCHR_OUTPUT
+	bool "sc2337p set master synchr output"
+endchoice
+
+config SENSOR_SC2337P_STREAMON_IN_KERNEL
+	depends on SENSOR_SC2337P_MASTER_SLAVE_SYNCHR_OUTPUT
+	bool "set sc2337p streamon in kernel"
+	default n
+
+config SENSOR_SC3336_MIPI
+	bool "use sc3336_mipi driver"
+	default n
+
+config SENSOR_SC500AI_MIPI
+	bool "use sc500ai_mipi driver"
+	default n
+
+config SENSOR_SC5336_MIPI
+	bool "use sc5336_mipi driver"
+	default n
+
+config SENSOR_TP9950_MIPI
+	bool "use tp9950_mipi driver"
+	default n
+
+config SENSOR_TP9953_DVP
+	bool "use tp9953_dvp driver"
+	default n
+
+config SENSOR_IMX319_MIPI
+	bool "use imx319_mipi driver"
+	default n
+
+config SENSOR_IMX335_MIPI
+	bool "use imx335_mipi driver"
+	default n
+
+config SENSOR_SC035HGS_MIPI
+	bool "use sc035hgs_mipi driver"
+	default n
+
+config SENSOR_TP2815_MIPI
+	bool "use tp2815_mipi driver"
+	default n
+
+config SENSOR_GC0406_MIPI
+	bool "use gc0406_mipi driver"
+	default n
+
+config SENSOR_BF2253L_MIPI
+	bool "use bf2253l_mipi driver"
+	default n
+
+config SENSOR_N5_DVP
+	tristate "use n5_dvp driver"
+	default n
+
+config SENSOR_BF2257CS_MIPI
+	tristate "use bf2257cs_mipi driver"
+	default n
+
+config SENSOR_F355P_MIPI
+	tristate "use f355p_mipi driver"
+	default n
+
+config SENSOR_F355P_DVP
+	tristate "use f355p_dvp driver"
+	default n
+
+config SENSOR_F37P_DVP
+	tristate "use f37p_dvp driver"
+	default n
+
+config SENSOR_F37P_MIPI
+	tristate "use f37p_mipi driver"
+	default n
+
+config SENSOR_OV02B10_MIPI
+	tristate "use ov02b10_mipi driver"
+	default n
+

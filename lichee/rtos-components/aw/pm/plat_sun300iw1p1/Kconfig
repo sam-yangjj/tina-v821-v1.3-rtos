@@ -1,0 +1,84 @@
+menuconfig PM_PLAT_DEBUG
+    bool "pm platform debug tools"
+    depends on COMPONENTS_PM
+    help
+      PM platform debug tools.
+
+if PM_PLAT_DEBUG
+config PM_DEBUG_POWERON_REGS_SHOW
+    bool "pm debug poweron regs show"
+    default n
+    depends on COMPONENTS_PM
+    help
+      Perform pm software porcess to record specific register values.
+
+config PM_DEBUG_WATCHDOG_RESET
+    bool "pm debug watchdog reset"
+    default n
+    depends on COMPONENTS_PM
+    select DRIVERS_RTC_WATCHDOG
+    select DRIVERS_PRCM
+    help
+    	Enable watchdog when suspend begins and disable watchdog when resume ends.
+
+config PM_DEBUG_WATCHDOG_RESET_TIME
+    int "pm debug watchdog reset overtime(seconds)"
+    default 10
+    depends on PM_DEBUG_WATCHDOG_RESET
+    help
+    	watchdog overtime setting(seconds).
+endif
+
+config PM_PLAT_PATH
+    string "pm plat name"
+    default "plat_sun300iw1p1"
+    depends on COMPONENTS_PM
+
+config SUNXI_VF_2_1
+    bool "Set CPU to VF 2_1 (1200MHz/1.00v)"
+    default n
+    depends on COMPONENTS_PM
+    help
+        Set CPU to VF 2_1 (1200MHz/1.00v).
+
+config PMC_EN1_FOR_PWRCTRL
+    bool "pmc en1 for pwrctrl"
+    default y
+    depends on COMPONENTS_PM
+    help
+        pmc en1 for pwrctrl to use
+
+config PMC_EN2_FOR_PWRCTRL
+    bool "pmc en2 for pwrctrl"
+    default y
+    depends on COMPONENTS_PM
+    help
+        pmc en2 for pwrctrl to use
+
+config PMC_PL6_FOR_PWRCTRL
+    bool "pmc pl6 for pwrctrl"
+    default y
+    depends on COMPONENTS_PM
+    help
+        pmc pl6 for pwrctrl to use
+
+config PMC_PL7_FOR_PWRCTRL
+    bool "pmc pl7 for pwrctrl"
+    default n
+    depends on COMPONENTS_PM
+    help
+        pmc pl7 for pwrctrl to use
+
+config RESUME_SENSOR_IN_SRAM
+    bool "resume sensor in sram"
+    default n
+    depends on COMPONENTS_PM
+    help
+        resume sensor in sram to optimization aov pm time
+
+config PM_DISABLE_RCCAL_IN_HIBERNATION
+    bool "pm disable rccal in hibernation"
+    default n
+    depends on COMPONENTS_PM
+    help
+        pm disable rccal in hibernation

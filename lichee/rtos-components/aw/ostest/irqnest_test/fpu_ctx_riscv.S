@@ -1,0 +1,151 @@
+/*
+ * Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
+ *
+ * Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+ * the people's Republic of China and other countries.
+ * All Allwinner Technology Co.,Ltd. trademarks are used with permission.
+ *
+ * DISCLAIMER
+ * THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+ * IF YOU NEED TO INTEGRATE THIRD PARTY’S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+ * IN ALLWINNERS’SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+ * ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+ * ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+ * COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+ * YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY’S TECHNOLOGY.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+ * PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+ * WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+ * THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+ * OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+ * IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+ * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+ * NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+ * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+ * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+ * OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+/*
+* Copyright (c) 2024-2030 Allwinner Technology Co., Ltd. ALL rights reserved.
+*
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the people's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
+*
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY’S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS’SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY’S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
+
+/*
+void irqnest_fpu_ctx_test_read_reg(fpu_reg_t *reg_buf);
+void irqnest_fpu_ctx_test_write_reg(const fpu_reg_t *reg_buf);
+*/
+
+#define FPU_REG_SIZE CONFIG_IRQNEST_FPU_GENERAL_REG_SIZE
+#if FPU_REG_SIZE == 8
+	#define store_reg fsd
+	#define load_reg fld
+#elif FPU_REG_SIZE == 4
+	#define store_reg fsw
+	#define load_reg flw
+#else
+	#error Unsupported FPU general register size!
+#endif
+
+.global irqnest_fpu_ctx_test_read_reg
+.global irqnest_fpu_ctx_test_write_reg
+
+irqnest_fpu_ctx_test_read_reg:
+	store_reg  f0, 0(a0)
+	store_reg  f1, 1 * FPU_REG_SIZE(a0)
+	store_reg  f2, 2 * FPU_REG_SIZE(a0)
+	store_reg  f3, 3 * FPU_REG_SIZE(a0)
+	store_reg  f4, 4 * FPU_REG_SIZE(a0)
+	store_reg  f5, 5 * FPU_REG_SIZE(a0)
+	store_reg  f6, 6 * FPU_REG_SIZE(a0)
+	store_reg  f7, 7 * FPU_REG_SIZE(a0)
+	store_reg  f8, 8 * FPU_REG_SIZE(a0)
+	store_reg  f9, 9 * FPU_REG_SIZE(a0)
+	store_reg  f10, 10 * FPU_REG_SIZE(a0)
+	store_reg  f11, 11 * FPU_REG_SIZE(a0)
+	store_reg  f12, 12 * FPU_REG_SIZE(a0)
+	store_reg  f13, 13 * FPU_REG_SIZE(a0)
+	store_reg  f14, 14 * FPU_REG_SIZE(a0)
+	store_reg  f15, 15 * FPU_REG_SIZE(a0)
+	store_reg  f16, 16 * FPU_REG_SIZE(a0)
+	store_reg  f17, 17 * FPU_REG_SIZE(a0)
+	store_reg  f18, 18 * FPU_REG_SIZE(a0)
+	store_reg  f19, 19 * FPU_REG_SIZE(a0)
+	store_reg  f20, 20 * FPU_REG_SIZE(a0)
+	store_reg  f21, 21 * FPU_REG_SIZE(a0)
+	store_reg  f22, 22 * FPU_REG_SIZE(a0)
+	store_reg  f23, 23 * FPU_REG_SIZE(a0)
+	store_reg  f24, 24 * FPU_REG_SIZE(a0)
+	store_reg  f25, 25 * FPU_REG_SIZE(a0)
+	store_reg  f26, 26 * FPU_REG_SIZE(a0)
+	store_reg  f27, 27 * FPU_REG_SIZE(a0)
+	store_reg  f28, 28 * FPU_REG_SIZE(a0)
+	store_reg  f29, 29 * FPU_REG_SIZE(a0)
+	store_reg  f30, 30 * FPU_REG_SIZE(a0)
+	store_reg  f31, 31 * FPU_REG_SIZE(a0)
+	ret
+
+irqnest_fpu_ctx_test_write_reg:
+	load_reg  f0, 0(a0)
+	load_reg  f1, 1 * FPU_REG_SIZE(a0)
+	load_reg  f2, 2 * FPU_REG_SIZE(a0)
+	load_reg  f3, 3 * FPU_REG_SIZE(a0)
+	load_reg  f4, 4 * FPU_REG_SIZE(a0)
+	load_reg  f5, 5 * FPU_REG_SIZE(a0)
+	load_reg  f6, 6 * FPU_REG_SIZE(a0)
+	load_reg  f7, 7 * FPU_REG_SIZE(a0)
+	load_reg  f8, 8 * FPU_REG_SIZE(a0)
+	load_reg  f9, 9 * FPU_REG_SIZE(a0)
+	load_reg  f10, 10 * FPU_REG_SIZE(a0)
+	load_reg  f11, 11 * FPU_REG_SIZE(a0)
+	load_reg  f12, 12 * FPU_REG_SIZE(a0)
+	load_reg  f13, 13 * FPU_REG_SIZE(a0)
+	load_reg  f14, 14 * FPU_REG_SIZE(a0)
+	load_reg  f15, 15 * FPU_REG_SIZE(a0)
+	load_reg  f16, 16 * FPU_REG_SIZE(a0)
+	load_reg  f17, 17 * FPU_REG_SIZE(a0)
+	load_reg  f18, 18 * FPU_REG_SIZE(a0)
+	load_reg  f19, 19 * FPU_REG_SIZE(a0)
+	load_reg  f20, 20 * FPU_REG_SIZE(a0)
+	load_reg  f21, 21 * FPU_REG_SIZE(a0)
+	load_reg  f22, 22 * FPU_REG_SIZE(a0)
+	load_reg  f23, 23 * FPU_REG_SIZE(a0)
+	load_reg  f24, 24 * FPU_REG_SIZE(a0)
+	load_reg  f25, 25 * FPU_REG_SIZE(a0)
+	load_reg  f26, 26 * FPU_REG_SIZE(a0)
+	load_reg  f27, 27 * FPU_REG_SIZE(a0)
+	load_reg  f28, 28 * FPU_REG_SIZE(a0)
+	load_reg  f29, 29 * FPU_REG_SIZE(a0)
+	load_reg  f30, 30 * FPU_REG_SIZE(a0)
+	load_reg  f31, 31 * FPU_REG_SIZE(a0)
+	ret

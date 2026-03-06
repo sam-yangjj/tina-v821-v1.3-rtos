@@ -1,0 +1,236 @@
+menu "OpenAMP Support"
+
+config COMPONENTS_LIBMETAL
+	bool "Libmetal Support"
+	default n
+
+config COMPONENTS_OPENAMP
+	bool "OpenAMP Framework Support"
+	depends on COMPONENTS_LIBMETAL && DRIVERS_MSGBOX
+	default n
+
+if COMPONENTS_OPENAMP
+	config AMP_SLAVE_MODE
+		bool "salve mode(only support slave mode)"
+		default y
+
+	config MBOX_CHANNEL
+		int "Using msgbox channel"
+		range 0 7
+		default 0
+
+	config MBOX_QUEUE_LENGTH
+		int "Config msgbox recv queue len"
+		range 1 1024
+		default 16
+
+	config VDEV_RESERVED_MEM
+		bool "Virtio device reserved memory"
+		depends on ARCH_RISCV_PMP && PMP_EARLY_ENABLE
+		default y
+		help
+		  OpenAMP need to specify reserved memory for normal rpmsg communication
+		  when MPU(eg: PMP hardware in RISC-V) enable and turn on early. If you
+		  don't specify the reserved memory, system will possibly crash because of MPU.
+		  And the parameter(address, size) of reserved memory is need to be same with
+		  the peer entity of rpmsg communication.
+
+	if VDEV_RESERVED_MEM
+		config VDEV_BUF_RESERVED_MEM_ADDR
+			hex "Virtio device buffer reserved memory addr"
+			default 0x42400000
+
+		config VDEV_BUF_RESERVED_MEM_SIZE
+			hex "Virtio device buffer reserved memory size"
+			default 0x40000
+
+		config VDEV_VRING0_RESERVED_MEM_ADDR
+			hex "Virtio device vring0 reserved memory addr"
+			default 0x42440000
+
+		config VDEV_VRING0_RESERVED_MEM_SIZE
+			hex "Virtio device vring0 reserved memory size"
+			default 0x2000
+
+		config VDEV_VRING1_RESERVED_MEM_ADDR
+			hex "Virtio device vring1 reserved memory addr"
+			default 0x42442000
+
+		config VDEV_VRING1_RESERVED_MEM_SIZE
+			hex "Virtio device vring1 reserved memory size"
+			default 0x2000
+	endif # VIRTIO_DEV_RESERVED_MEM
+
+	config RPMSG_DEMO
+		bool "rpmsg simple demo"
+		default n
+
+	config RPMSG_NOTIFY
+		bool "rpmsg notify driver"
+		default n
+
+	config RPMSG_SPEEDTEST
+		bool "rpmsg speedtest demo"
+		default n
+
+	config RPMSG_TEST
+		bool "rpmsg test demo"
+		default n
+
+	menuconfig RPMSG_CLIENT
+		bool "rpmsg client driver"
+		default n
+	if RPMSG_CLIENT
+		config RPMSG_CLIENT_TEST
+			depends on COMPONENTS_MD5
+			bool "Export client test cmd"
+			default n
+		config RPMSG_CLIENT_QUEUE_SIZE
+			int "rpmsg rx queue size"
+			range 0 128
+			default 16
+		config RPMSG_CLIENT_DEBUG
+			bool "printf debug info"
+			default n
+		config RPMSG_EPT_TEST_CMD
+			bool "endpoint test cmd"
+			default n
+	endif
+
+	menuconfig RPMSG_HEARBEAT
+		bool "rpmsg heartbeat driver"
+		default n
+	if RPMSG_HEARBEAT
+		config RPMSG_REMOTE_NAME
+		string "remoteproc master name."
+		default "e907_rproc"
+		help
+			remoteproc master name.
+			it will be defined in device tree in major core.
+			e.g e907_rproc@0 { ... }; is defined in dts.
+			e907_rproc is the master name.
+
+		config SUPPORT_RPROC_SUSPEND_ONLY
+		bool "support remoteproc suspend only"
+		default n
+
+		config RPROC_PM_INFO_REG_ADDR
+		hex "PM info record register address"
+		depends on SUPPORT_RPROC_SUSPEND_ONLY
+		default 0x07090114
+
+		config RPROC_PM_INFO_MAGIC_BIT_MASK
+		hex "PM state magic bit mask"
+		depends on SUPPORT_RPROC_SUSPEND_ONLY
+		default 0xFFFF0000
+
+		config RPROC_PM_INFO_MAGIC
+		hex "PM state magic"
+		depends on SUPPORT_RPROC_SUSPEND_ONLY
+		default 0x16AA0000
+
+		config RPROC_SUSPEND_ONLY_BIT_MASK
+		hex "remoteproc suspend only bit mask"
+		depends on SUPPORT_RPROC_SUSPEND_ONLY
+		default 0x2
+
+		config RPROC_SUSPEND_ONLY_BIT_ACTIVE_LOW
+		bool "remoteproc suspend only bit active low"
+		depends on SUPPORT_RPROC_SUSPEND_ONLY
+		default n
+
+	endif
+
+	config SLAVE_EARLY_BOOT
+		bool "system will early boot before master rproc ready"
+		default n
+
+	menuconfig AMP_TRACE_SUPPORT
+		bool "openamp trace Support"
+		default n
+		help
+		  This is a demo thar introduces how to use RPBuf to exchange large data
+		  with remote processor.
+	if AMP_TRACE_SUPPORT
+	config AMP_TRACE_BUF_SIZE
+		hex "config trace buffer size"
+		default 0x1000
+	endif
+
+	menuconfig MULTI_OPENAMP_SUPPORT
+		bool "multi openamp support"
+		default n
+	if MULTI_OPENAMP_SUPPORT
+		config MULTI_OPENAMP_SUPPORT_RV
+			bool "support toriscv rproc"
+		if MULTI_OPENAMP_SUPPORT_RV
+		choice
+			prompt "support torv rproc"
+		config OPENAMP_TORV_RPROC_MASTER
+			bool "master"
+		config OPENAMP_TORV_RPROC_SLAVE
+			bool "slave"
+		endchoice
+
+		config TORV_MBOX_CHANNEL
+			int "Using msgbox channel"
+			range 0 7
+			default 0
+		config TORV_MBOX_QUEUE_LENGTH
+			int "Config msgbox recv queue len"
+			range 1 1024
+			default 16
+		endif
+
+		config MULTI_OPENAMP_SUPPORT_DSP
+			bool "support todsp rproc"
+		if MULTI_OPENAMP_SUPPORT_DSP
+		choice
+			prompt "support todsp rproc"
+		config OPENAMP_TODSP_RPROC_MASTER
+			bool "master"
+		config OPENAMP_TODSP_RPROC_SLAVE
+			bool "slave"
+		endchoice
+
+		config TODSP_MBOX_CHANNEL
+			int "Using msgbox channel"
+			range 0 7
+			default 0
+		config TODSP_MBOX_QUEUE_LENGTH
+			int "Config msgbox recv queue len"
+			range 1 1024
+			default 16
+
+		endif
+	endif
+
+	config AMP_SHARE_IRQ
+		bool "openamp share interrupts support"
+		select COMPONENTS_OPENAMP_OPEN_AMP
+		default n
+		help
+			Openamp share interrupts support
+
+	config AW_RPMSG_PERF_TRACE
+		bool "Rpmsg performance trace"
+		default n
+		depends on COMPONENTS_AMP_TIMESTAMP
+		  help
+		  It will take up part of buffer to record timestamp when send and receive.
+
+	if AW_RPMSG_PERF_TRACE
+	config RPMSG_AMP_TS_DEV_ID
+		int "AMP timestamp device ID for rpmsg performance trace"
+		default 0
+
+	config AW_RPMSG_PERF_DATA_AUTO_DUMP
+		bool "Dump rpmsg performance data automatically after each transmit"
+		default n
+
+	endif
+
+endif
+
+endmenu
+

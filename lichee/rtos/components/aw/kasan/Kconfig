@@ -1,0 +1,46 @@
+menu "Kasan Components Support"
+
+config SLAB_DEBUG
+    bool "Tina RTOS SLAB DEBUG"
+	default n
+	depends on RTT_SLAB
+	help
+        Tina RTOS SLAB DEBUG support
+
+config CHUNK_BACKTRACE_LEVEL
+    int "slab debug backtrace level"
+	depends on SLAB_DEBUG
+	depends on DEBUG_BACKTRACE
+	default 16
+	help
+		"Backtrace level for slab corrupted check"
+
+config KASAN
+    bool "Tina RTOS KASAN"
+    default n
+	depends on SLAB_DEBUG || ARCH_RISCV_E906 || ARCH_RISCV_E907
+    help
+        Tina RTOS KASAN support.
+
+if KASAN
+	config KASAN_SHADOW_OFFSET
+	hex "kasan shadow offset"
+	default 0x0 if (ARCH_RISCV_E906 || ARCH_RISCV_E907)
+	default 0x1c000000
+
+	config KASAN_INLINE
+	bool "kasan inline"
+	default n
+
+	config KASAN_REPEAT_REPORT_ERROR
+	bool "kasan repeat report error"
+	default y
+
+	config KASAN_PLATFORM_CHECK
+	bool "enable platform specific check"
+	default y if (ARCH_RISCV_E906 || ARCH_RISCV_E907)
+	default n
+
+endif
+
+endmenu

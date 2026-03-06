@@ -1,0 +1,12 @@
+config COMPONENTS_RPBUF_UART
+	bool "rpbuf uart"
+	default n
+config RPBUFF_UART_PORT
+	int "rpbuff uart port number"
+	depends on COMPONENTS_RPBUF_UART
+	default 2
+
+config RPBUFF_UART_DEBUG_LOG
+	bool "rpbuff uart port debug log"
+	depends on COMPONENTS_RPBUF_UART
+	default n

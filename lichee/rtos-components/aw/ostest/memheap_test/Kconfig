@@ -1,0 +1,34 @@
+if COMPONENTS_OSTEST_RTT_MEMHEAP
+
+config NUM_HEAPS
+    int "Heaps number"
+    default 2
+    help
+        The amount of memory heap should not be too large
+
+config STACK_SIZE
+    int "Heaps Size bytes"
+    default 131072
+    help
+        The memory heap size should not be too large
+
+config MAX_ALLOC_SIZE
+    int "Maximum Allocation Size acquiesce 128 bytes"
+    default 128
+    help
+        The number of memory blocks should not be too large
+
+config TEST_ITERATIONS
+    int "Number of Test Iterations acquiesce 1000"
+    default 1000
+    help
+        Number of iterations * The memory block size cannot exceed the size of a single memory heap
+
+config ALIGNMENT
+    int "Alignment acquiesce 4"
+    default 4
+    help
+        This option specifies the alignment.
+        The value is fixed at 4 and cannot be changed.
+
+endif

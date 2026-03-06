@@ -1,0 +1,32 @@
+menu "Board Config"
+
+config RAM_START_ADDRESS
+	hex "ram start address"
+	help
+	  ram start address
+
+config RAM_LENGTH
+	hex "ram length"
+	default 0x10000
+	help
+	  ram size
+
+config STACK_SIZE
+	hex "stack size"
+	default 0x1000
+	help
+	  stack size
+
+config UART_PORT
+	int "uart port"
+	default 0
+
+config LOG_LEVEL
+	int "log level"
+	range 0 1
+	default 1
+	help
+	  0 only printk
+	  1 printk and printf
+
+endmenu

@@ -1,0 +1,152 @@
+menu "command-line interface"
+
+config COMPONENT_CLI
+    bool "command-line interface support"
+    select COMPONENT_CLI_COMMANDS
+    default y
+
+config COMPONENT_CLI_COMMANDS
+    bool "command-line command support"
+    default y
+
+config COMMAND_MISC
+    bool "misc command"
+    default y
+
+if COMPONENT_CLI_COMMANDS
+
+if COMMAND_MISC
+
+config COMMAND_SAMPLE
+    bool "sample command"
+    default n
+
+config COMMAND_REBOOT
+    bool "reboot command"
+    select DRIVERS_WATCHDOG
+    select DRIVERS_RTC
+    default y
+
+config COMMAND_FORK
+    bool "fork command"
+    default y
+
+config COMMAND_EFUSE_TEST
+    bool "efsue_test command"
+    depends on DRIVERS_EFUSE
+    default n
+
+config COMMAND_TOP
+    bool "top command"
+    default y
+
+config COMMAND_MTOP
+    bool "mtop command"
+    select DRIVERS_MBUS
+    default y
+
+config COMMAND_VERSION
+	bool "version command"
+    default y
+
+config COMMAND_REG_WRITE
+	bool "register write command"
+    default y
+
+config COMMAND_REG_READ
+	bool "register read command"
+    default y
+
+config COMMAND_TEST_CACHE
+	bool "test cache command"
+    default n
+
+config COMMAND_HELP
+	bool "help command"
+    default y
+
+config COMMAND_CLEAN
+	bool "clean command"
+    default y
+
+config COMMAND_MEM_LAYOUT
+	bool "memory layout command"
+    default y
+
+config COMMAND_DATE
+	bool "date command"
+    default y
+
+config COMMAND_TIMEDATECTL
+	bool "timectl command"
+    default y
+
+config COMMAND_TZSET
+	bool "tzset command"
+    default n
+
+config COMMAND_KTIME
+    bool "ktime command"
+    default n
+
+config COMMAND_FREE
+	bool "free command"
+    default y
+
+config COMMAND_CLOCK_TIME
+	bool "clock time command"
+    default y
+
+config COMMAND_PANIC
+    bool "painc command"
+    default n
+
+config COMMAND_TASK_STATUS
+    bool "task status command"
+    default y
+
+config COMMAND_DCACHE_CLEAN
+    bool "dcache clean command"
+    default n
+
+config COMMAND_DCACHE_INVALIDATE
+    bool "dcache invalidate command"
+    default n
+
+config COMMAND_EXEC
+    bool "execute file"
+    default n
+
+endif
+
+
+config COMMAND_MEMTESTER
+	bool "memtester command"
+    default n
+
+config COMMAND_AUTO_START_MEMTESTER
+    bool "auto start memtester for test"
+    depends on COMMAND_MEMTESTER
+    default n
+
+config COMMAND_CSR
+    bool "csr command"
+    default n
+
+config COMMAND_LIST_IRQ
+    bool "list irq command"
+    default n
+
+if COMMAND_LIST_IRQ
+config COMMAND_LIST_IRQ_ENHANCE
+    bool "list irq command enhance"
+    default n
+
+config COMMAND_IRQ_DEBUG
+    bool "use irq interrupt debug"
+    default n
+endif
+
+endif
+
+endmenu

@@ -1,0 +1,12 @@
+menuconfig COMPONENTS_OSTEST_CPP
+	bool "C++ Environment Testcase"
+	select CPP_11_TEST
+	depends on COMPONENT_CPLUSPLUS
+
+if COMPONENTS_OSTEST_CPP
+
+config CPP_11_TEST
+    bool "C++ 11 Testcase"
+    default n
+
+endif

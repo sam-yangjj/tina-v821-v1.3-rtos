@@ -1,0 +1,15 @@
+choice
+	prompt "Sun300iw1 Driver Controller"
+	default DRIVER_SUN300IW1_BT_CONTROLLER_BLINK_BLE_ONLY
+
+config DRIVER_SUN300IW1_BT_CONTROLLER_BLE_ONLY
+	bool "Sun300iw1 BLE Only Controller"
+	help
+	  If this option is enabled, Sun300iw1 BLE only Controller is used.
+
+config DRIVER_SUN300IW1_BT_CONTROLLER_BLINK_BLE_ONLY
+	bool "Sun300iw1 BLE Only blink Controller"
+	help
+	  If this option is enabled, Sun300iw1 BLE only for blink Controller is used.
+
+endchoice

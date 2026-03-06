@@ -1,0 +1,48 @@
+menu "service"
+config COMPONENTS_SERVICE_DHCPS
+	bool "dhcps demo"
+	depends on (WLAN_AP || !DRIVERS_XRADIO)
+	depends on COMPONENTS_LWIP
+	default n
+	help
+		this is dhcps command example
+
+config COMPONENTS_SERVICE_IPERF
+	bool "iperf demo"
+	default n
+	select NEWLIBC_NANO_SCANF_FLOAT
+	help
+		this is iperf command example
+
+config COMPONENTS_SERVICE_PING
+	bool "ping demo"
+	depends on COMPONENTS_PING
+	default n
+	help
+		this is ping command example
+
+if COMPONENTS_PAHOMQTT
+config COMPONENTS_SERVICE_MQTT
+	bool "mqtt demo"
+	default n
+	help
+		this is mqtt command example
+endif
+
+if COMPONENTS_MBEDTLS_2_16_0
+config COMPONENTS_SERVICE_MBEDTLS
+	bool "mbedtls demo"
+	default n
+	help
+		this is mbedtls command example
+endif
+
+if COMPONENTS_HTTPCLIENT
+config COMPONENTS_SERVICE_HTTPCLIENT
+	bool "httpc demo"
+	default n
+	help
+		this is httpclient command example
+endif
+
+endmenu

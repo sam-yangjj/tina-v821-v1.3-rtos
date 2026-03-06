@@ -1,0 +1,9 @@
+obj-$(CONFIG_COMPONENTS_MD5) += md5/
+obj-$(CONFIG_COMPONENTS_OPENAMP) += openamp/
+obj-$(CONFIG_COMPONENT_CJSON) += cjson/
+obj-y += network/
+obj-y += bluetooth/
+obj-$(CONFIG_COMPONENT_RTT_MEMHEAP) += rtt_memheap/
+obj-$(CONFIG_COMPONENTS_COMPRESS) += decompress/
+obj-y += fs/
+obj-$(CONFIG_COMPONENTS_KEYWORD_SPOTTING) += uvoice_keyword_spotting/

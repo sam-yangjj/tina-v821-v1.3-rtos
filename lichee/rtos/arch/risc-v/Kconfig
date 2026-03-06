@@ -1,0 +1,211 @@
+#
+# For a description of the syntax of this configuration file,
+# see misc/tools/kconfig-language.txt.
+#
+
+if ARCH_RISCV
+
+comment "RISCV Options"
+
+menu "sunxi platform"
+
+config ARCH_SUN300IW1
+	bool "allwinner sun300iw1"
+	select ARCH_RISCV_E907
+	default n
+
+endmenu
+
+config ARCH_RISCV_E907
+	bool
+	select ARCH_RISCV_RV32
+	select LITTLE_ENDIAN
+
+config ARCH_RISCV_RV64
+	bool
+
+config ARCH_RISCV_RV32
+	bool
+
+config TOOLCHAIN_CPU
+	string
+	default ""
+
+choice
+	prompt "Floating point ABI"
+	default TOOLCHAIN_RISCV_FLOAT_SOFT
+
+config TOOLCHAIN_RISCV_FLOAT_HARD
+	bool "hardfp"
+	select TOOLCHAIN_FLOAT_HARD
+
+config TOOLCHAIN_RISCV_FLOAT_SOFTFP
+	bool "softfp"
+	select TOOLCHAIN_FLOAT_SOFTFP
+
+config TOOLCHAIN_RISCV_FLOAT_SOFT
+	bool "soft"
+	select TOOLCHAIN_FLOAT_SOFT
+
+config TOOLCHAIN_RISCV_FLOAT_NONE
+	bool "none"
+	select TOOLCHAIN_FLOAT_NONE
+
+endchoice
+
+config TOOLCHAIN_MACH_FLAGS
+	string "toolchain arch cflags"
+	default "-mcmodel=medany -mabi=lp64d -march=rv64gcxthead"
+
+config TOOLCHAIN_LD_FLAGS
+	string
+	default "-melf32lriscv" if ARCH_RISCV_RV32
+
+config TOOLCHAIN_MFPU
+	string
+	default ""
+
+config TOOLCHAIN_FPU_ABI
+	string
+	default "-march=rv64gcxthead" if TOOLCHAIN_FLOAT_SOFT
+	default "-march=rv64gcxthead" if TOOLCHAIN_FLOAT_SOFTFP
+	default "-march=rv64gcxthead" if TOOLCHAIN_FLOAT_HARD
+	default "" if TOOLCHAIN_FLOAT_NONE
+
+config ARCH_RISCV_FPU
+	bool "FPU support"
+	default y
+	---help---
+		Build in support for the RISC-V Floating Point Unit (FPU).
+		Check your chip specifications first; not all RISC-V chips support the FPU.
+
+config SAVE_RISCV_FPU_CONTEXT_IN_TCB
+	bool "Save RISC-V FPU context in thread TCB"
+	depends on ARCH_RISCV_FPU
+	default y
+	---help---
+		When enable this configuration, the system will skip FPU context save/restore
+		opertaion on some unnecessary situation, you'd better enable this config unless
+		the FPU work abnormally after enable this config.
+
+config RECORD_RISCV_FPU_CTX_STATISTICS
+	bool "Record RISC-V FPU context save/restore statistics info for debug"
+	depends on SAVE_RISCV_FPU_CONTEXT_IN_TCB
+	default n
+	---help---
+		Record RISC-V FPU context save/restore operation(skip situation) statistics info.
+
+config ARCH_RISCV_PMU
+    bool "RISC-V PMU Support"
+    default n
+
+config ARCH_HAVE_MMU
+    bool "MMU Support"
+	default n
+
+config ARCH_HAVE_DCACHE
+    bool "DCache Support"
+	default n
+
+config ARCH_HAVE_ICACHE
+    bool "ICache Support"
+	default n
+
+menuconfig ARCH_RISCV_PMP
+	bool "RISC-V PMP Support"
+	default n
+
+menuconfig ARCH_RISCV_ECC_INJECT
+	bool "RISC-V ecc error inject test"
+	default n
+
+if ARCH_RISCV_PMP
+config PMP_EARLY_ENABLE
+	bool "enable PMP early"
+	default n
+config PMP_REGIONS
+	int "Max PMP Regions"
+	default 8
+config PMP_ADDR_ALIGN
+	int "addr align"
+	default 128 if ARCH_RISCV_E906
+	default 4096 if ARCH_RISCV_C906
+choice
+	prompt "pmp mode"
+	default PMP_USE_TOR_MODE
+config PMP_USE_TOR_MODE
+	bool "tor mode"
+config PMP_USE_NAPOT_MODE
+	bool "napot mode"
+endchoice
+
+config PMP_DEBUG_CONFIG_SEQUENCE
+	bool "Debug PMP configuration sequence"
+	default n
+	help
+	  Debug PMP configuration sequence. When this config enable, the system will
+	  record the PMP configuration info, and you can get these record info to analysis
+	  whether the PMP configuration sequence is correct.
+
+config PMP_CONFIG_RECORD_NUM
+	int "PMP configuration record num"
+	depends on PMP_DEBUG_CONFIG_SEQUENCE
+	default 16
+
+endif
+
+config GEN_DIGEST
+	bool "genterate .digest segment"
+	default n
+
+if GEN_DIGEST
+choice
+        prompt "verify methon"
+        config	VERIFY_MD5
+                bool "MD5"
+        config VERIFY_CRC32
+                bool "CRC32"
+endchoice
+endif
+
+config ARCH_TIMER_HZ
+	int "Arch Timer Frequency"
+	default 24000000
+	help
+	  This timer is used for rtos system ticking clock
+
+menuconfig ARCH_RISCV_INTERRUPT_NEST
+	bool "interrupt nest support"
+	depends on ARCH_RISCV_E906 || ARCH_RISCV_E907
+	default n
+
+if ARCH_RISCV_INTERRUPT_NEST
+config SET_CLICINTCTL_NLBITS
+	int "CLICINTCTL.nlbits"
+	depends on ARCH_RISCV_E906 || ARCH_RISCV_E907
+	default 2
+	help
+	  Determine the valid bit for interrupt level.
+	  The value should not be larger than the platform fixed CLICINTCTLBITS.
+
+config INTERRUPT_NEST_STACK
+	int "interrupt nest stack(byte)"
+	default 1152
+	help
+	  Number of interrupt nest * Context size
+
+menuconfig INTERRUPT_NEST_DEBUG
+	bool "interrupt nest debug"
+	default n
+
+if INTERRUPT_NEST_DEBUG
+config INTERRUPT_NEST_DEBUG_LOG
+	bool "nest debug log"
+	default n
+	help
+	  Enable CLIC debug log for intterrupt nest.
+
+endif
+endif
+
+endif

@@ -1,0 +1,79 @@
+menu "RPBuf framework"
+
+config COMPONENTS_RPBUF
+	bool
+	help
+	  The RPBuf (Remote Processor Buffer) framework provides mechanisms to
+	  allocate buffers and transmit their references to remote processor.
+	  This allows user to exchange large data with remote processor.
+
+config COMPONENTS_RPBUF_SERVICE_RPMSG
+	bool "RPMsg-based RPBuf service component"
+	select COMPONENTS_RPBUF
+	select COMPONENTS_OPENAMP_OPEN_AMP
+	default n
+	help
+	  Say y here to enable support for the RPMsg-based RPBuf service component.
+	  This is one kind of RPBuf service backend implemented with RPMsg.
+
+config COMPONENTS_RPBUF_CONTROLLER
+	bool "RPBuf controller component"
+	select COMPONENTS_RPBUF
+	default n
+	help
+	  Say y here to enable support for the RPBuf controller component.
+
+config AW_RPBUF_PERF_TRACE
+	bool "Rpbuf performance trace"
+	default n
+	depends on COMPONENTS_RPBUF
+	depends on COMPONENTS_AMP_TIMESTAMP
+	  help
+	  It will take up part of buffer to record timestamp when send and receive.
+
+if AW_RPBUF_PERF_TRACE
+config RPBUF_AMP_TS_DEV_ID
+	int "AMP timestamp device ID"
+	default 0
+
+config AW_RPBUF_PERF_DATA_AUTO_DUMP
+	bool "Dump performance data automatically after each transmit"
+	default n
+
+endif
+
+config COMPONENTS_RPBUF_RESERVED_MEM
+	bool "RPBuf reserved memory"
+	depends on COMPONENTS_RPBUF && ARCH_RISCV_PMP
+	default y
+	help
+	  RPBuf module need to specify reserved memory for buffer allocation
+	  when MPU(eg: PMP hardware in RISC-V) enable. If you don't specify
+	  the reserved memory, RPBuf master will use buffer with random address
+	  from memory allocator. In this situation, system will possibly crash
+	  because of MPU when it send data to remote processor by rpbuf.
+
+if COMPONENTS_RPBUF_RESERVED_MEM
+config COMPONENTS_RPBUF_RESERVED_MEM_ADDR
+	hex "RPBuf reserved memory addr"
+	default 0x42380000
+	help
+	  We need provide the rpbuf reserved memeory address if MPU(eg: PMP hardware in RISC-V)
+	  enable. This config is need to be same with the peer entity of rpbuf communication.
+
+config COMPONENTS_RPBUF_RESERVED_MEM_SIZE
+	hex "RPBuf reserved memory size"
+	default 0x80000
+	help
+	  We need provide the rpbuf reserved memeory size if MPU(eg: PMP hardware in RISC-V)
+	  enable. This config is need to be same with the peer entity of rpbuf communication.
+
+endif # COMPONENTS_RPBUF_RESERVED_MEM
+
+config COMPONENTS_RPBUF_DEMO
+	bool "RPBuf Demo"
+	depends on COMPONENTS_MD5
+	select COMPONENTS_RPBUF
+	default n
+
+endmenu

@@ -1,0 +1,7 @@
+mainmenu "amp boot0 Config"
+
+source "arch/Kconfig"
+
+source "driver/Kconfig"
+
+source "board/Kconfig"

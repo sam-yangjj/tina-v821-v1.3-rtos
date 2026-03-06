@@ -1,0 +1,5 @@
+config COMPONENTS_KEYWORD_SPOTTING
+	bool "keyword spotting by uvoice"
+	default n
+	help
+      support uvoice keyword spotting

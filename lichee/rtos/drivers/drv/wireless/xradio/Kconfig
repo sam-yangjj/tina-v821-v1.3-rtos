@@ -1,0 +1,284 @@
+#
+# Wlan configuration
+#
+
+menuconfig DRIVERS_XRADIO
+	default n
+	select COMPONENTS_MBEDTLS
+	bool "XRADIO driver"
+
+if DRIVERS_XRADIO
+
+config DRIVERS_XRADIO_CMD
+	bool "Enable xradio test cmd"
+	default y
+	select NEWLIBC_NANO_SCANF_FLOAT if ARCH_SUN20IW2P1
+	help
+		this will use xradio test cmd.
+
+config XRADIO_FW_KEEPALIVE_CMD
+	bool "Enable xradio fw keepalive cmd"
+	default y
+	depends on DRIVERS_XRADIO_CMD
+	help
+		support fw keep alive cmd
+
+config XRADIO_RF_CMD
+	bool "Enable xradio rf cmd"
+	default y
+	depends on DRIVERS_XRADIO_CMD
+	help
+		support rf cmd
+
+config WLAN_RAW_PACKET_FEATURE
+	bool "Enable RAW packet send and recv cmd"
+	default y
+	select WLAN_SUPPORT_EXPAND_CMD if ARCH_SUN300IW1
+	help
+		this will use xradio RAW packet send and recv cmd.
+
+choice XRADIO_CHIP
+	default DRIVER_V821 if ARCH_SUN300IW1P1
+	default DRIVER_R128 if ARCH_SUN20IW2P1
+	default DRIVER_XR829
+	prompt "Xradio chip"
+	help
+		Specify the xradio chip.
+
+config DRIVER_XR819
+	bool "Enable xr819 driver"
+	depends on DRIVERS_XRADIO
+	help
+		this will use xr819 chip.
+
+config DRIVER_XR819S
+	bool "Enable xr819s driver"
+	depends on DRIVERS_XRADIO
+	help
+		this will use xr819s chip.
+
+config DRIVER_XR829
+	bool "Enable xr829 driver"
+	depends on DRIVERS_XRADIO
+	help
+		this will use xr829 chip.
+
+config DRIVER_R128
+	bool "Enable r128 driver"
+	depends on ARCH_SUN20IW2P1
+	help
+		this will use r128 chip.
+
+config DRIVER_V821
+	bool "Enable v821 driver"
+	depends on ARCH_SUN300IW1P1
+	help
+		this will use v821 chip.
+
+endchoice
+
+config XR829_40M_FW
+	bool "Use Firmware 40M for XR829"
+	depends on DRIVER_XR829
+	default y
+	help
+		this will use xr829 chip
+
+config XR819S_40M_FW
+    bool "Use Firmware 40M for XR819S"
+    depends on DRIVER_XR819S
+    default y
+    help
+               this will use xr819s chip
+# Wi-Fi Certification of WFA
+config WIFI_CERTIFIED
+    bool "Wi-Fi Certification of WFA"
+    default y
+    help
+        If this option is enabled,  Wi-Fi Certification of WFA used.
+
+# v821 wlan dual core enable
+config MUTIL_NET_STACK
+    bool "v821 wlan dual core"
+    depends on DRIVER_V821
+    default y
+    help
+        If this option is enabled, v821 mutil net stack used.
+
+if MUTIL_NET_STACK
+config INIT_NET_STACK
+    bool "default init xradio dual net stack"
+    depends on MUTIL_NET_STACK
+    default n
+    help
+        If this option is enabled, v821 will init xrlink when system start.
+
+# v821 wlan rpbuf perf test
+config XRADIO_RPBUF_PERF_TEST
+    bool "v821 xradio rpbuf perf test"
+    depends on MUTIL_NET_STACK
+    default n
+    help
+        If this option is enabled, v821 mutil net stack used.
+endif
+
+# wlan station mode
+config WLAN_STA
+    bool "wlan station mode"
+    default y
+    help
+        If this option is enabled, WLAN STA mode used.
+
+config WLAN_STA_WPS
+    bool "wlan station mode with wps support"
+	depends on WLAN_STA
+    default n
+    help
+        If this option is enabled, WLAN STA WPS used.
+
+choice XRADIO_STA_PS_MODE
+	default WLAN_STA_AUTO_PS_MODE if ARCH_SUN300IW1P1
+	default WLAN_STA_FORCE_PS_MODE
+	prompt "Xradio sta PS mode"
+	depends on WLAN_STA
+	help
+		Specify the xradio sta PS mode.
+
+config WLAN_STA_AUTO_PS_MODE
+	bool "STA in Active/PS mode by chip type"
+	depends on WLAN_STA
+	help
+		STA in Active/PS mode by chip type(efuse...).
+
+config WLAN_STA_FORCE_ACTIVE_MODE
+	bool "STA in Active mode"
+	depends on WLAN_STA
+	help
+		STA in Active mode.
+
+config WLAN_STA_FORCE_PS_MODE
+	bool "STA in PS mode"
+	depends on WLAN_STA
+	help
+		STA will enter PS mode.
+endchoice
+
+config WLAN_STA_FREQ_AUTO_ALIGN
+    bool "wlan station mode use freq auto align ap"
+	depends on WLAN_STA
+    default y if ARCH_SUN300IW1P1
+    default n
+    help
+        If this option is enabled, WLAN STA enable freq auto align ap func.
+
+config BT_CLOSE_WLAN_FREQ_AUTO_ALIGN
+    bool "bt close freq auto align ap"
+	depends on WLAN_STA_FREQ_AUTO_ALIGN
+	depends on CHIP_V821B
+    default n
+    help
+        If this option is enabled, bt open will disable freq auto align ap func.
+
+# wlan monitor mode
+config WLAN_MONITOR
+    bool "wlan monitor mode"
+    default y
+    select WLAN_SUPPORT_EXPAND_CMD if ARCH_SUN300IW1
+    help
+        If this option is enabled, WLAN Monitor mode used.
+
+# wlan hostap mode
+config WLAN_AP
+    bool "wlan ap mode"
+    default y
+    select COMPONENTS_SERVICE_UDHCPD
+    help
+        If this option is enabled, WLAN AP mode used.
+
+config WLAN_AP_SNIFFER
+	bool "wlan ap sniffer mode"
+	default n
+	depends on WLAN_MONITOR
+	depends on WLAN_AP
+	help
+		If this option is enabled, WLAN AP sniffer mode used.
+
+# wlan station mode and softap mode coexist
+config STA_SOFTAP_COEXIST
+    bool "wlan STA and SoftAp coexist"
+    depends on WLAN_STA
+    depends on WLAN_AP
+    default n
+    help
+        enabled station mode and softap mode coexistence.
+
+config FREQ_TRIM_FROM_SDD
+	bool "freq trim from SDD first"
+	depends on ARCH_SUN20IW2P1
+	default n
+	help
+		obtain freq trim/offset value from SDD file and config it into system,
+		when this option selected, the priority will be higher than CONFIG_DCXO_FREQ_TRIM
+
+# wlan ETF test using ETF command line interface
+config ETF_CLI
+    bool
+    default n
+
+# wlan ETF test
+config ETF
+    bool "wlan ETF test"
+	select ETF_CLI
+	select NEWLIBC_NANO_SCANF_FLOAT if ARCH_SUN20IW2P1
+	select NEWLIBC_NANO_PRINTF_FLOAT if ARCH_SUN20IW2P1
+	#select WLAN_SHARE_RAM
+	#select WLAN_SHARE_RAM_SIZE_128K
+    default n
+    help
+        If this option is enabled, WLAN ETF test used.
+
+# Wlan use small stack
+config WLAN_SMALL_STACK_SIZE
+	bool
+	default n
+	help
+		use small stack in some CPU ARCH.
+
+# Mbuf implementation mode
+config MBUF_IMPL_MODE
+	int
+	default 0
+	help
+		0: continuous memory allocated from heap, 1: continuous memory allocated from lwip pbuf.
+
+config WLAN_SUPPORT_EXPAND_CMD
+	bool "support wifimanager exp cmd"
+	default y
+	depends on ARCH_SUN300IW1
+	depends on INIT_NET_STACK
+	help
+		support linux use e907 wlan cmd, wifimanager must enable CONFIG_WMG_SUPPORT_EXPAND
+
+config SUPPORT_EXP_LMAC_CMD
+	bool "lmac"
+	default y
+	depends on WLAN_SUPPORT_EXPAND_CMD
+	help
+		support expand lmac cmd
+
+config SUPPORT_EXP_RF_CMD
+	bool "rf"
+	default y
+	depends on WLAN_SUPPORT_EXPAND_CMD
+	help
+		support expand rf cmd
+
+config XR_WF_SW_FW_BUF_DISABLE
+	bool "disable wf switch fw buf"
+	default n
+	depends on ARCH_SUN300IW1P1
+	depends on CHIP_V821B
+	help
+		force disable wf switch fw buf
+
+endif

@@ -1,0 +1,3 @@
+source drivers/drv/wireless/Kconfig
+source drivers/drv/uart/Kconfig
+source drivers/drv/bluetooth/Kconfig

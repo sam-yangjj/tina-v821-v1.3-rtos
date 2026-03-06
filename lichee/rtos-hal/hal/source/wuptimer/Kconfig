@@ -1,0 +1,8 @@
+menu "WUPTIMER Devices"
+
+config DRIVERS_WUPTIMER
+    bool "enable wuptimer driver"
+	depends on ARCH_SUN300IW1
+        default y
+
+endmenu

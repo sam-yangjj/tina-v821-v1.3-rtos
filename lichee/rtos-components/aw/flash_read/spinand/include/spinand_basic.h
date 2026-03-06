@@ -1,0 +1,70 @@
+/*
+* Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
+*
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
+*
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY¡¯S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS¡¯SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY¡¯S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
+
+#ifndef __SPINAND_BASIC_H_
+#define __SPINAND_BASIC_H_
+
+#include "spinand_common.h"
+
+#define SPI_NAND_READY		  (1U << 0)
+#define SPI_NAND_ERASE_FAIL   (1U << 2)
+#define SPI_NAND_WRITE_FAIL   (1U << 3)
+#define SPI_NAND_ECC_FIRST_BIT   (4)
+#define SPI_NAND_ECC_BITMAP		 (0x3)
+#define SPI_NAND_INT_ECCSR_BITMAP	(0xf)
+
+#define SPI_NAND_GETSR              0x0f
+#define SPI_NAND_SETSR              0x1f
+#define SPI_NAND_PAGE_READ          0x13
+#define SPI_NAND_FAST_READ_X1		0x0b
+#define SPI_NAND_READ_X1		    0x03
+#define SPI_NAND_READ_X2            0x3b
+#define SPI_NAND_READ_X4            0x6b
+#define SPI_NAND_READ_DUAL_IO 	    0xbb
+#define SPI_NAND_READ_QUAD_IO 	    0xeb
+#define SPI_NAND_RDID  		        0x9f
+#define SPI_NAND_PP    		        0x02
+#define SPI_NAND_PP_X4    	        0x32
+#define SPI_NAND_RANDOM_PP    		0x84
+#define SPI_NAND_PE                 0x10   /* program execute */
+#define SPI_NAND_BE                 0xd8   /* block erase */
+#define SPI_NAND_RESET 		        0xff
+
+s32 spi_nand_reset(u32 spi_no, u32 chip);
+s32 spi_nand_read_single_page(struct spinand_physical_param *readop, u32 data_size, u32 spare_only_flag);
+s32 spi_nand_setecc(u32 spi_no, u32 chip, u8 reg);
+s32 spi_nand_setotp(u32 spi_no, u32 chip, u8 reg);
+s32 spi_nand_getotp(u32 spi_no, u32 chip, u8 *reg);
+s32 spi_nand_setblocklock(u32 spi_no, u32 chip, u8 reg);
+s32 spi_nand_read_id(u32 spi_no, u32 chip, u8 *id, u8 len, int dummy);
+
+#endif //__SPINAND_BASIC_H_

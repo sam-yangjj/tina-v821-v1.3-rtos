@@ -1,0 +1,208 @@
+;sunxi platform application
+;---------------------------------------------------------------------------------------------------------
+; 说明： 脚本中的字符串区分大小写，用户可以修改"="后面的数值，但是不要修改前面的字符串
+; 描述gpio的形式：Port:端口+组内序号<功能分配><内部电阻状态><驱动能力><输出电平状态>
+;---------------------------------------------------------------------------------------------------------
+
+;---------------------------------------------------------------------------------
+; version:版本1.00
+; machine:板级文件名
+;---------------------------------------------------------------------------------
+[product]
+version = "100"
+machine = "fpga"
+
+;----------------------------------------------------------------------------------
+;twi configuration
+;[twix]
+;twi_sck    scl的GPIO配置
+;twi_sda    sda的GPIO配置
+;----------------------------------------------------------------------------------
+[twi0]
+twi_sck  = port:PA03<4><1><default><default>
+twi_sda  = port:PA04<4><1><default><default>
+
+;----------------------------------------------------------------------------------
+; 说明：使用CONFIG_CLI_UART_PORT选定console口
+;[uartx]
+;uart_tx     |串口发送的GPIO配置|
+;uart_rx     |串口接收的GPIO配置|
+;----------------------------------------------------------------------------------
+[uart3]
+uart_tx   = port:PL02<3><1><default><default>
+uart_rx   = port:PL03<3><1><default><default>
+
+[uart2]
+uart_tx   = port:PL04<4><1><default><default>
+uart_rx   = port:PL05<4><1><default><default>
+
+[uart1]
+uart_tx   = port:PD09<6><1><default><default>
+uart_rx   = port:PD10<6><1><default><default>
+
+[uart0]
+uart_tx   = port:PD22<3><1><default><default>
+uart_rx   = port:PD23<3><1><default><default>
+
+[uart_dma]
+uart3_dma_used = 0
+uart2_dma_used = 1
+uart1_dma_used = 0
+
+;----------------------------------------------------------------------------------
+; 说明：配置aglink
+;[aglink]
+;mode         |设置工作模式，debug使用|
+;checksum     |是否开启CRC校验，0关闭校验，1开启校验|
+;----------------------------------------------------------------------------------
+[aglink]
+;mode = 0
+checksum = 0
+
+[pwm8]
+pwm_used        = 1
+pwm_positive    = port:PD18<4><0><0><default>
+
+[pwm9]
+pwm_used        = 1
+pwm_positive    = port:PD19<4><0><0><default>
+
+[rtc]
+extern_fre      = 32768
+
+[dram_para]
+dram_clk            = 520
+dram_type           = 2
+dram_zq             = 0x7b7bf9
+dram_odt_en         = 0x00
+dram_para1          = 0x000000d2
+dram_para2          = 0x00400000
+dram_mr0            = 0x00000E73
+dram_mr1            = 0x02
+dram_mr2            = 0x0
+dram_mr3            = 0x0
+dram_tpr0           = 0x00469991
+dram_tpr1           = 0x0131A10C
+dram_tpr2           = 0x00056040
+dram_tpr3           = 0xB4787896
+dram_tpr4           = 0x0
+dram_tpr5           = 0x48484848
+dram_tpr6           = 0x48
+dram_tpr7           = 0x1621121e
+dram_tpr8           = 0x0
+dram_tpr9           = 0x0
+dram_tpr10          = 0x00000000
+dram_tpr11          = 0x00000000
+dram_tpr12          = 0x00000000
+dram_tpr13          = 0xb4006101
+
+;----------------------------------------------------------------------------------
+;video input modules configuration
+;-----------------------------------------------
+; |          resolutions & clocks              |
+; ----------------------------------------------
+; |               |  csi_top  | csi_top_parent |
+; ----------------------------------------------
+; | 480p          | 150000000 |    1200000000   |
+; ----------------------------------------------
+; | 720p/1080p    | 200000000 |    1200000000   |
+; ----------------------------------------------
+; | 1080p + 1080p | 240000000 |   1200000000   |
+; ----------------------------------------------
+;----------------------------------------------------------------------------------
+
+[vind]
+
+vind_user	= 1
+csi_top	= 240000000
+csi_top_parent = 1200000000
+
+[vind/sensor0]
+sensor0_used          = 1
+sensor0_mname         = "gc05a2_mipi"
+sensor0_twi_cci_id    = 0
+sensor0_twi_addr      = 0x6f
+sensor0_mclk_id       = 0
+sensor0_isp_used      = 1
+sensor0_power_en      = port:PD12<default><default><default><default>
+sensor0_pwdn          = port:PD12<default><default><default><default>
+sensor0_reset         = port:PA0<1><0><1><0>
+sensor0_sm_hs         = port:PD12<default><default><default><default>
+sensor0_sm_vs         = port:PD12<default><default><default><default>
+sensor0_ir_cut0       = port:PD12<default><default><default><default>
+sensor0_ir_cut1       = port:PD12<default><default><default><default>
+sensor0_ir_led        = port:PD12<default><default><default><default>
+
+[vind/sensor1]
+sensor1_used          = 0
+sensor1_mname         = "ar0238"
+sensor1_twi_cci_id    = 1
+sensor1_twi_addr      = 0x20
+sensor1_mclk_id       = 1
+sensor1_isp_used      = 0
+sensor1_power_en      =
+sensor1_reset         =
+sensor1_pwdn          = 0
+sensor1_sm_hs         = port:PI0<1><0><1><0>
+sensor1_sm_vs         = port:PI1<1><0><1><0>
+sensor0_ir_cut0       = port:
+sensor0_ir_cut1       = port:
+sensor0_ir_led        = port:
+
+[vind/vinc0]
+vinc0_used          = 1
+vinc0_csi_sel		= 0
+vinc0_mipi_sel		= 0
+vinc0_isp_sel		= 0
+vinc0_isp_tx_ch		= 0
+vinc0_tdm_rx_sel	= 0
+vinc0_rear_sensor_sel	= 0
+vinc0_front_sensor_sel	= 0
+vinc0_width     = 1920
+vinc0_height    = 1080
+vinc0_merge_width = 2592
+vinc0_merge_height = 1944
+vinc0_use_sensor_list   = 0
+vinc0_mipi_num = 2
+vinc0_work_mode		= 1
+
+[vind/vinc1]
+vinc1_used		= 1
+vinc1_csi_sel		= 0
+vinc1_mipi_sel		= 0
+vinc1_isp_sel		= 1
+vinc1_isp_tx_ch		= 0
+vinc1_tdm_rx_sel	= 1
+vinc1_rear_sensor_sel	= 0
+vinc1_front_sensor_sel	= 0
+vinc1_width     = 1920
+vinc1_height    = 1080
+vinc1_merge_width = 2592
+vinc1_merge_height = 1944
+vinc1_use_sensor_list   = 0
+vinc1_mipi_num = 2
+
+[vind/vinc4]
+vinc4_used		= 0
+vinc4_csi_sel		= 0
+vinc4_mipi_sel		= 0
+vinc4_isp_sel		= 0
+vinc4_isp_tx_ch		= 0
+vinc4_tdm_rx_sel	= 0
+vinc4_rear_sensor_sel	= 0
+vinc4_front_sensor_sel	= 0
+vinc4_width     = 1280
+vinc4_height    = 720
+vinc4_use_sensor_list   = 0
+vinc4_mipi_num = 1
+vinc4_work_mode		= 0
+
+[vind/vinc5]
+vinc5_used		= 0
+vinc5_csi_sel		= 0
+vinc5_mipi_sel		= 0
+vinc5_isp_sel		= 0
+vinc5_isp_tx_ch		= 0
+vinc5_tdm_rx_sel	= 0
+vinc5_rear_sensor_sel	= 0
+vinc5_front_sensor_sel	= 0

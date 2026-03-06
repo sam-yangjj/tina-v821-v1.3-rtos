@@ -1,0 +1,24 @@
+menu "TWI Devices"
+
+config DRIVERS_TWI
+    bool "enable twi driver"
+        default y
+
+config HAL_TEST_TWI
+    bool "enable twi hal APIs test command"
+    depends on DRIVERS_TWI
+        default n
+
+config SUNXI_TWI_ERR_HOOK
+    bool "report twi error code by hook"
+    help
+        report twi error code by user hook
+        required function: void twi_err_report(const char *func, uint32_t line, uint32_t port, uint32_t code)
+    depends on DRIVERS_TWI
+        default n
+
+config SUNXI_TWI_PORT
+    int "use twi port"
+    depends on DRIVERS_TWI
+    default 0
+endmenu

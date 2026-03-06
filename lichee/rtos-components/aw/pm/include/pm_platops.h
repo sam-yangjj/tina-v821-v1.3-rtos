@@ -1,0 +1,106 @@
+/*
+ * Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
+ *
+ * Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+ * the people's Republic of China and other countries.
+ * All Allwinner Technology Co.,Ltd. trademarks are used with permission.
+ *
+ * DISCLAIMER
+ * THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+ * IF YOU NEED TO INTEGRATE THIRD PARTY’S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+ * IN ALLWINNERS’SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+ * ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+ * ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+ * COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+ * YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY’S TECHNOLOGY.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+ * PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+ * WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+ * THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+ * OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+ * IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+ * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+ * NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+ * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+ * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+ * OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
+#ifndef _PM_PLATOPS_H_
+#define _PM_PLATOPS_H_
+
+#include "pm_base.h"
+
+typedef enum {
+	HARDWARE_WAKESRC_MASK_WUPIO_0  = 0x00000001,
+	HARDWARE_WAKESRC_MASK_WUPIO_1  = 0x00000002,
+	HARDWARE_WAKESRC_MASK_WUPIO_2  = 0x00000004,
+	HARDWARE_WAKESRC_MASK_WUPIO_3  = 0x00000008,
+	HARDWARE_WAKESRC_MASK_WUPIO_4  = 0x00000010,
+	HARDWARE_WAKESRC_MASK_WUPIO_5  = 0x00000020,
+	HARDWARE_WAKESRC_MASK_WUPIO_6  = 0x00000040,
+	HARDWARE_WAKESRC_MASK_WUPIO_7  = 0x00000080,
+	HARDWARE_WAKESRC_MASK_WUPTIMER = 0x00000100,
+	HARDWARE_WAKESRC_MASK_ALARM_0  = 0x00000200,
+	HARDWARE_WAKESRC_MASK_ALARM_1  = 0x00000400,
+	HARDWARE_WAKESRC_MASK_WLAN     = 0x00000800,
+	HARDWARE_WAKESRC_MASK_ALL      = 0x00000FFF,
+} hardware_wakesrc_mask_t;
+
+typedef struct {
+	char *name;
+	int (*valid) (suspend_mode_t mode);
+	int (*prepare_notify) (suspend_mode_t mode);
+	int (*pre_begin) (suspend_mode_t mode);
+	int (*begin) (suspend_mode_t mode);
+	int (*prepare) (suspend_mode_t mode);
+	int (*prepare_late) (suspend_mode_t mode);
+	int (*enter) (suspend_mode_t mode);
+	int (*wake) (suspend_mode_t mode);
+	int (*finish) (suspend_mode_t mode);
+	int (*end) (suspend_mode_t mode);
+	int (*post_end) (suspend_mode_t mode);
+	int (*recover) (suspend_mode_t mode);
+	int (*again) (suspend_mode_t mode);
+	int (*again_late) (suspend_mode_t mode);
+	int (*finish_notify) (suspend_mode_t mode);
+	uint32_t (*get_timestamp)(void);
+	hardware_wakesrc_mask_t (*get_hardware_wakesrc_mask)(void);
+} suspend_ops_t;
+
+typedef enum {
+	PM_SUSPEND_OPS_TYPE_VALID = 0,
+
+	PM_SUSPEND_OPS_TYPE_PREPARED_NOTIFY,
+	PM_SUSPEND_OPS_TYPE_PRE_BEGIN,
+	PM_SUSPEND_OPS_TYPE_BEGIN,
+	PM_SUSPEND_OPS_TYPE_PREPARE,
+	PM_SUSPEND_OPS_TYPE_PREPARE_LATE,
+	PM_SUSPEND_OPS_TYPE_ENTER,
+	PM_SUSPEND_OPS_TYPE_WAKE,
+	PM_SUSPEND_OPS_TYPE_FINISH,
+	PM_SUSPEND_OPS_TYPE_END,
+	PM_SUSPEND_OPS_TYPE_POST_END,
+	PM_SUSPEND_OPS_TYPE_RECOVER,
+	PM_SUSPEND_OPS_TYPE_AGAIN,
+	PM_SUSPEND_OPS_TYPE_AGAIN_LATE,
+	PM_SUSPEND_OPS_TYPE_FINISHED_NOTIFY,
+
+	PM_SUSPEND_OPS_TYPE_MAX,
+	PM_SUSPEND_OPS_TYPE_BASE = PM_SUSPEND_OPS_TYPE_VALID,
+} suspend_ops_type_t;
+
+
+
+int pm_platops_register(suspend_ops_t *ops);
+int pm_platops_call(suspend_ops_type_t type, suspend_mode_t mode);
+void pm_platops_printf(void);
+uint32_t pm_platops_get_timestamp(void);
+hardware_wakesrc_mask_t pm_platops_get_hardware_wakesrc(void);
+
+#endif
+

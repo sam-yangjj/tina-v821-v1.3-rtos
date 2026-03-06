@@ -1,0 +1,49 @@
+menuconfig COMPONENTS_OSTEST_IRQNEST
+	bool "Irqnest Testcase"
+	depends on ARCH_RISCV_INTERRUPT_NEST
+
+if COMPONENTS_OSTEST_IRQNEST
+
+config IRQNEST_TEST_HW_IRQID_START
+	int "Hardware interrupt id used for irq nest test"
+	default -32
+	help
+		The configured interrupt id and the interrupt id following
+		it will be used for irq nest test.
+
+config IRQNEST_OSTEST_GENERAL_CTX_CMP
+	bool "General regs and Control regs Save/Restore test"
+	default n
+	help
+		General regs and Control regs Save/Restore data compare.
+		Relies on arch interrupt entry code support this function.
+
+if IRQNEST_OSTEST_GENERAL_CTX_CMP
+config IRQNEST_GENERAL_REG_SIZE
+	int "General Register Size"
+	default 4
+
+config IRQNEST_GENERAL_REG_CNT
+	int "General Register Count"
+	default 32
+
+config IRQNEST_TEST_CTX_CONTENT_DEBUG
+	bool "print General and Control regs Save/Restore data"
+	default n
+endif
+
+config	IRQNEST_FPU_TEST
+	bool "FPU and FPU Context Save/Restore test"
+	default n
+
+if IRQNEST_FPU_TEST
+config IRQNEST_FPU_GENERAL_REG_SIZE
+	int "FPU General Register Size"
+	default 4
+
+config IRQNEST_FPU_GENERAL_REG_CNT
+	int "FPU General Register Count"
+	default 32
+endif#IRQNEST_FPU_TEST
+
+endif

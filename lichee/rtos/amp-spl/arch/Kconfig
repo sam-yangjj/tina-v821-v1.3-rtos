@@ -1,0 +1,74 @@
+config ARCH_RISCV32
+	bool
+
+config ARCH_RISCV64
+	bool
+
+config ARCH_RISCV
+	bool
+
+config ARCH_CPU_E907
+	select ARCH_RISCV32
+	select ARCH_RISCV
+	bool
+
+config CHIP_PLATFORM
+	string
+	default "SUN300IW1" if SUN300IW1
+
+config ARCH_PLATFORM
+	string
+	default "riscv" if ARCH_RISCV32
+	default "riscv" if ARCH_RISCV32
+
+choice PLATFORM
+	prompt "Sunxi-chip to use"
+	help
+	the ic we use for build
+
+config ARCH_SUN300IW1
+	bool
+	select ARCH_CPU_E907
+	prompt "AW1882 platform"
+endchoice
+
+menu "toolchain config"
+
+config BITS_PER_LONG
+	int "bits per long"
+	default 32 if ARCH_RISCV32
+	default 64 if ARCH_RISCV64
+
+config TOOLCHAIN_PACKAGE
+	string "toolchain package"
+
+config TOOLCHAIN_PATH
+	string "toolchain path"
+
+config TOOLCHAIN_PREFIX
+	string "toolchain prifix"
+	default "riscv64-unknown-elf-" if ARCH_RISCV
+
+config TOOLCHAIN_MACH_FLAGS
+	string "toolchain mach flags"
+	default "-mcmodel=medany -mabi=ilp32d -march=rv32imafdcxthead" if ARCH_CPU_E907
+
+config TOOLCHAIN_LD_FLAGS
+	string "toolchain ldflags"
+	default "-nostartfiles -nodefaultlibs --gc-sections" if ARCH_RISCV
+
+config ELF_FORMAT
+	string
+	default "-melf32lriscv" if ARCH_RISCV32
+	default "-melf64lriscv" if ARCH_RISCV64
+
+endmenu
+
+if ARCH_RISCV32
+menu "riscv config"
+
+config TIMESTAMP_BASE_ADDR
+	hex "timestamp base addr"
+
+endmenu
+endif

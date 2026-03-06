@@ -1,0 +1,10 @@
+menuconfig TWI_USED
+	def_bool n
+	prompt "TWI used"
+
+if TWI_USED
+config TWI_DEBUG
+	bool "twi debug"
+	default n
+endif
+

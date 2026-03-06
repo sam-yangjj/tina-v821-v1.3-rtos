@@ -1,0 +1,147 @@
+config KERNEL_FREERTOS
+    bool "support freertos kernel"
+    default y
+
+if KERNEL_FREERTOS
+choice
+	prompt "Build freertos version"
+	default FREERTOS_V10_4_3
+
+config FREERTOS_V10_4_3
+	bool "freertos v10.4.3"
+endchoice
+endif
+
+config KERNEL_FREERTOS_PLUS_POSIX
+    bool "support posix"
+    default y
+
+if KERNEL_FREERTOS_PLUS_POSIX
+config PTHREAD_SUPPORT_THREAD_LOCAL_STORAGE
+    bool "support thread local storage(TLS)"
+    default y if TOOLCHAIN="tools/Xuantie-900-gcc-elf-newlib-x86_64-V2.10.1/bin/riscv64-unknown-elf-" && COMPONENT_CPLUSPLUS
+    default n
+
+config PTHREAD_TLS_KEY_MAX_NUM
+    int "Maximum TLS key number"
+    depends on PTHREAD_SUPPORT_THREAD_LOCAL_STORAGE
+    default 8
+endif # if KERNEL_FREERTOS_PLUS_POSIX
+
+choice
+prompt "Heap Memory Manager"
+default	HEAP_4
+
+config	HEAP_4
+	bool "Use heap-4 to allocate memory"
+
+endchoice
+
+config DYNAMIC_HEAP_SIZE
+	bool "dynamic default heap size"
+	default y
+
+
+choice
+prompt "Backtrace Select"
+default DEBUG_BACKTRACE
+
+config DEBUG_BACKTRACE
+    bool "debug backtrace by machine code"
+	help
+	backtrace by parsing machine code
+
+config DEBUG_BACKTRACE_FRAME_POINTER
+    bool "debug backtrace by frame pointer"
+	help
+	backtrace by frame pointer
+
+config DEBUG_BACKTRACE_NONE
+    bool "no backtrace"
+	help
+	no backtrace
+
+endchoice
+
+config EXCEPTION_CAUSE_STR
+    bool "enable exception cause str"
+    default y
+
+config TOTAL_HEAP_SIZE
+    hex "total heap size (bytes)"
+    default 0x1000000
+
+config HEAP_MIN_ALIGNMENT_SIZE
+    int "heap min alignment size (bytes)"
+    default 8
+
+config HZ
+    int "Tick frequency, Hz"
+    range 10 1000
+    default 1000 if SMP
+    help
+    System's tick frequency, Hz.
+
+config OS_USE_IDLE_HOOK
+	bool "idle hook"
+	default y
+
+choice
+prompt "Io Lock"
+default UART_CLI_USE_MUTEX
+
+config UART_CLI_USE_NONE
+	bool "Lock None"
+
+config UART_CLI_USE_MUTEX
+	bool "Use Mutex"
+
+config UART_CLI_USE_SPINLOCK
+	bool "Use SpinLock"
+
+endchoice
+
+menuconfig KERNEL_COMPRESS
+	bool "kernel Compress Support"
+	default n
+	depends on ARCH_RISCV
+
+if KERNEL_COMPRESS
+config KERNEL_COMPRESS_DEBUG
+	bool "Debug"
+	default n
+
+choice
+	prompt "Compress kernel format"
+	config KERNEL_COMPRESS_ELF
+		bool "elf"
+	config KERNEL_COMPRESS_BIN
+		bool "bin"
+endchoice
+
+if KERNEL_COMPRESS_ELF
+config KERNEL_COMPRESS_LOADADDR
+	hex "ELF decompress addr"
+	default 0
+	help
+		if =0,will auto select load addr
+endif
+
+choice
+	prompt "Compress methon"
+	config KERNEL_COMPRESS_GZIP
+		bool "GZIP"
+	config KERNEL_COMPRESS_LZO
+		bool "LZO"
+	config KERNEL_COMPRESS_LZMA
+		bool "LZMA"
+	config KERNEL_COMPRESS_XZ
+		bool "XZ"
+		select XZ_DEC_BCJ
+		select XZ_DEC_RISCV if RISCV
+		select XZ_DEC_ARM if ARM
+	config KERNEL_COMPRESS_LZ4
+		bool "LZ4"
+endchoice
+endif
+

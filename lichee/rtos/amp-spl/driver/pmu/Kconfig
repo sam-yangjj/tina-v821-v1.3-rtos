@@ -1,0 +1,15 @@
+menuconfig PMU_USED
+	def_bool n
+	prompt "PMU used"
+	depends on TWI_USED
+
+if PMU_USED
+config PMU_TWI_ID
+	int "pmu twi id"
+	default 0
+
+config AXP2101_POWER
+	bool "axp2101 driver"
+	default n
+endif
+

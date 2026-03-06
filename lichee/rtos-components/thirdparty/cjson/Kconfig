@@ -1,0 +1,16 @@
+menuconfig COMPONENT_CJSON
+    bool "cjson support"
+    default n
+	if COMPONENT_CJSON
+		choice
+			default COMPONENTS_C_JSON
+			prompt "cjson version"
+		config COMPONENTS_C_JSON
+			bool "c-json"
+		config COMPONENTS_CJSON_1_7_18
+			bool "cJSON-1.7.18"
+		config COMPONENTS_COREJSON_3_3_0
+			bool "coreJSON-3.3.0"
+		endchoice
+	endif
+

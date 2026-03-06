@@ -1,0 +1,116 @@
+menu "UART Devices"
+
+config DRIVERS_UART
+    bool "enable uart driver"
+        default y
+
+config HAL_TEST_UART
+    bool "enable uart hal APIs test command"
+	depends on DRIVERS_UART
+        default n
+
+config SUNXI_UART_SUPPORT_POLL
+    bool "support poll APIs"
+	depends on DRIVERS_UART
+        default n
+
+config SUNXI_UART_REGISTER_UART0
+    bool "support uart0 device"
+	depends on DRIVERS_UART
+        default n
+
+config SUNXI_UART_REGISTER_UART1
+    bool "support uart1 device"
+	depends on DRIVERS_UART
+        default n
+
+config SUNXI_UART_REGISTER_UART2
+    bool "support uart2 device"
+	depends on DRIVERS_UART
+        default n
+
+config SUNXI_UART_REGISTER_UART3
+    bool "support uart3 device"
+	depends on DRIVERS_UART
+        default n
+
+config SUNXI_UART_REGISTER_UART4
+    bool "support uart4 device"
+	depends on DRIVERS_UART
+        default n
+
+config SUNXI_UART_REGISTER_UART5
+    bool "support uart5 device"
+	depends on DRIVERS_UART
+        default n
+
+config SUNXI_UART_REGISTER_UART6
+    bool "support uart6 device"
+	depends on DRIVERS_UART
+        default n
+
+config SUNXI_UART_REGISTER_UART7
+    bool "support uart7 device"
+	depends on DRIVERS_UART
+        default n
+
+config SUNXI_UART_REGISTER_UART8
+    bool "support uart8 device"
+	depends on DRIVERS_UART
+        default n
+
+config SUNXI_UART_REGISTER_UART9
+    bool "support uart9 device"
+	depends on DRIVERS_UART
+        default n
+
+config SUNXI_UART_REGISTER_UART10
+    bool "support uart10 device"
+	depends on DRIVERS_UART
+        default n
+
+config SUNXI_UART_REGISTER_UART11
+    bool "support uart11 device"
+	depends on DRIVERS_UART
+        default n
+
+config SUNXI_UART_REGISTER_UART12
+    bool "support uart12 device"
+	depends on DRIVERS_UART
+        default n
+
+config SUNXI_UART_REGISTER_UART13
+    bool "support uart13 device"
+	depends on DRIVERS_UART
+        default n
+
+config SUNXI_UART_REGISTER_UART14
+    bool "support uart14 device"
+	depends on DRIVERS_UART
+        default n
+
+config SUNXI_UART_REGISTER_UART15
+    bool "support uart15 device"
+	depends on DRIVERS_UART
+        default n
+
+config SUNXI_UART_REGISTER_UART16
+    bool "support uart16 device"
+	depends on DRIVERS_UART
+        default n
+
+config CLI_UART_PORT
+    int "cli uart port number"
+    depends on (DRIVERS_UART && !OS_MELIS)
+        default 0
+
+config CLI_UART_BAUD_1500000
+    bool "set cli uart baud rate to 1500000"
+	depends on DRIVERS_UART
+        default n
+
+config UART_DMA
+    bool "support transfer uart data through dma"
+    depends on DRIVERS_UART
+    default n
+endmenu

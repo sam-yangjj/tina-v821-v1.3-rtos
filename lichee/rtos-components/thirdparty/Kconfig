@@ -1,0 +1,9 @@
+source components/common/thirdparty/md5/Kconfig
+source components/common/thirdparty/openamp/Kconfig
+source components/common/thirdparty/cjson/Kconfig
+source components/common/thirdparty/network/Kconfig
+source components/common/thirdparty/bluetooth/Kconfig
+source components/common/thirdparty/rtt_memheap/Kconfig
+source components/common/thirdparty/decompress/Kconfig
+source components/common/thirdparty/fs/Kconfig
+source components/common/thirdparty/uvoice_keyword_spotting/Kconfig

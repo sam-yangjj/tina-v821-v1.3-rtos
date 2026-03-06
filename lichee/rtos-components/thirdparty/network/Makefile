@@ -1,0 +1,5 @@
+obj-$(CONFIG_COMPONENTS_LWIP_2_1_2) += lwip-2.1.2/
+obj-$(CONFIG_COMPONENTS_PING) += ping/
+obj-$(CONFIG_COMPONENTS_MBEDTLS_2_16_0) += mbedtls-2.16.0/
+obj-$(CONFIG_COMPONENTS_HTTPC) += httpc/
+obj-$(CONFIG_COMPONENTS_MQTTC) += mqttc/

@@ -1,0 +1,4 @@
+使用示例: 给 arch/risc-v 目录下的所有.c .h文件添加注释
+	python3 scripts/add_announce/add_announce.py scripts/add_announce/Copyright.txt --input arch/risc-v/
+
+如需忽略特定目录, 请编译 add_announce.py 的 ignore_dir 数组.

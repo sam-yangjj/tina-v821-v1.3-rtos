@@ -1,0 +1,15 @@
+menu "Device Drivers"
+
+source "driver/pin/Kconfig"
+
+source "driver/intc/Kconfig"
+
+source "driver/uart/Kconfig"
+
+source "driver/pmu/Kconfig"
+
+source "driver/twi/Kconfig"
+
+source "driver/vin/Kconfig"
+
+endmenu

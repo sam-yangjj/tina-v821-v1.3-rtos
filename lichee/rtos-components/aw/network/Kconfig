@@ -1,0 +1,91 @@
+menu "aw network"
+config COMPONENTS_TCPIP
+	bool "tcp ip adapter"
+	select DRIVERS_RFKILL
+	default n
+
+source components/common/aw/network/service/Kconfig
+
+menuconfig COMPONENTS_LOW_POWER_SELECT
+	bool "low power application selection"
+	default n
+	if COMPONENTS_LOW_POWER_SELECT
+		choice
+			prompt "select low power application type"
+			config COMPONENTS_LOW_POWER_APP
+				bool "low power"
+			config COMPONENTS_TUYA_LOW_POWER_APP
+				bool "tuya low power app"
+		endchoice
+
+		if COMPONENTS_LOW_POWER_APP
+			choice
+				default COMPONENTS_LOW_POWER_APP_TCP
+				prompt "low power keepalive version"
+			config COMPONENTS_LOW_POWER_APP_TCP
+				bool "low power keepalive by tcp"
+			config COMPONENTS_LOW_POWER_APP_MQTT
+				bool "low power keepalive by mqtt"
+				select COMPONENTS_MQTTC
+				select COMPONENTS_COREMQTT_2_3_1
+			config COMPONENTS_LOW_POWER_WLAN_FW_TCP
+				bool "low power keepalive tcp by wlan fw"
+				depends on DRIVERS_XRADIO
+			endchoice
+
+			choice
+				default COMPONENTS_LOW_POWER_STRATEGY_STANDBY_NOT_WAIT_SER_REPLY
+				prompt "low power keepalive demo strategy use"
+			config COMPONENTS_LOW_POWER_STRATEGY_STANDBY_WAIT_SER_REPLY
+				bool "low power strategy standby wait ser reply"
+			config COMPONENTS_LOW_POWER_STRATEGY_STANDBY_NOT_WAIT_SER_REPLY
+				bool "low pwoer strategy standby not wait ser reply"
+			config COMPONENTS_LOW_POWER_STRATEGY_DISABLE
+				bool "low pwoer strategy disable"
+			endchoice
+
+			config COMPONENTS_LOW_POWER_APP_MQTT_CAPACITY_READ
+				bool "capacity read in low power keepalive mqtt demo"
+				default n
+				depends on COMPONENTS_LOW_POWER_APP_MQTT
+
+			config COMPONENTS_LOW_POWER_APP_NOTIFY
+				bool "low power demo pm notify"
+				default n
+			config COMPONENTS_LOW_POWER_RPMSG_HEART
+				bool "low power demo rpmsg heart"
+				default n
+
+			if COMPONENTS_LOW_POWER_APP_TCP
+				config COMPONENTS_LOW_POWER_APP_RUN_WITH_WERTC_EXIT
+					bool "low power demo run when cpux demo_video_webrtc exit"
+					default n
+				config COMPONENTS_LOW_POWER_APP_RTC_WATCH_DOG
+					bool "low power demo rtc watchdog"
+					default n
+					help
+					  low power demo rtc watchdog, use for low power app
+
+				config COMPONENTS_LOW_POWER_PIR
+					bool "low power demo pir"
+					default n
+					select DRIVERS_RTC
+					select DRIVERS_WUPIO
+
+				config COMPONENTS_LOW_POWER_POWERKEY
+					bool "low power demo powerkey"
+					default n
+					select DRIVERS_WUPIO
+			endif
+		endif
+
+		if COMPONENTS_TUYA_LOW_POWER_APP
+			config TUYA_RTC_WATCH_DOG
+				bool "tuya rtc watchdog"
+				default n
+				help
+				  tuya rtc watchdog, use for tuya lowpower app
+		endif
+	endif
+endmenu
+

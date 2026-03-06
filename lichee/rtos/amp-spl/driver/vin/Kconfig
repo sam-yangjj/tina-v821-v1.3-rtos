@@ -1,0 +1,20 @@
+menu VIN_USED
+
+config VIN_USED
+    bool "enable vin driver"
+    default n
+
+if VIN_USED
+
+config SENSOR_NUMBER
+	int "isp support number"
+	default 1
+	range 1 2
+
+menu "sensor driver select"
+source "driver/vin/sensor/Kconfig"
+endmenu
+
+endif
+
+endmenu

@@ -1,0 +1,21 @@
+choice
+	prompt "Bluetooth Driver Interface"
+	default BT_VHCI
+
+config BT_VHCI
+	bool "Virtual HCI"
+	help
+	  If this option is enabled, virtual hci is used.
+
+config BT_UART
+	bool "UART HCI"
+	help
+	  If this option is enabled, uart hci is used.
+
+endchoice
+
+config COMPONENTS_AMP_BT
+	bool "Blutooth AMP connect"
+	default y
+	help
+	  this will set blutooth AMP connect type.

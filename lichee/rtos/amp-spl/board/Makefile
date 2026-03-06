@@ -1,0 +1,1 @@
+obj-$(CONFIG_ARCH_SUN300IW1) += sun300iw1/

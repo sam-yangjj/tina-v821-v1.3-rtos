@@ -1,0 +1,76 @@
+
+menu "network"
+
+menuconfig COMPONENTS_LWIP
+	bool "lwip"
+	default n
+	if COMPONENTS_LWIP
+		choice
+			default COMPONENTS_LWIP_2_1_2
+			prompt "lwip version"
+			help
+			the TCP/IP protocol suite
+		config COMPONENTS_LWIP_2_1_2
+			bool "lwip-2.1.2"
+		endchoice
+	endif
+
+config COMPONENTS_LWIP_PORT_START
+	int "port_start"
+	depends on COMPONENTS_LWIP
+	depends on MUTIL_NET_STACK
+	default 65000
+	help
+		xrlink will send port greater than COMPONENTS_LWIP_PORT_START to lwip, else to linux
+
+config COMPONENTS_PING
+	bool "ping"
+	default n
+
+menuconfig COMPONENTS_MBEDTLS
+	bool "mbedtls"
+	default n
+	if COMPONENTS_MBEDTLS
+		choice
+			default COMPONENTS_MBEDTLS_2_16_0
+			prompt "mbedtls version"
+		config COMPONENTS_MBEDTLS_2_16_0
+			bool "mbedtls-2.16.0"
+		endchoice
+			config COMPONENTS_MBEDTLS_TEST
+				bool "mebdtls test"
+				default n
+	endif
+
+menuconfig COMPONENTS_HTTPC
+	bool "httpc"
+	select COMPONENTS_MBEDTLS
+	select COMPONENTS_MBEDTLS_2_16_0
+	default n
+	if COMPONENTS_HTTPC
+		choice
+			default COMPONENTS_HTTPCLIENT
+			prompt "http client version"
+		config COMPONENTS_HTTPCLIENT
+			bool "httpclient"
+		config COMPONENTS_COREHTTP_3_1_1
+			bool "coreHTTP-3.1.1"
+		endchoice
+	endif
+
+menuconfig COMPONENTS_MQTTC
+	bool "mqttc"
+	default n
+	if COMPONENTS_MQTTC
+		config COMPONENTS_PAHOMQTT
+			bool "paho_mqtt"
+		config COMPONENTS_COREMQTT_2_3_1
+			bool "coreMQTT-2.3.1"
+
+config COMPONENTS_COREMQTT_EXAMPLE
+	bool "CORE_MQTT demo"
+	depends on COMPONENTS_COREMQTT_2_3_1
+	help
+		CORE_MQTT demo
+	endif
+endmenu

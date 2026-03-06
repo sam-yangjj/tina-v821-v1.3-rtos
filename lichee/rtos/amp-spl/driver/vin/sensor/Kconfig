@@ -1,0 +1,29 @@
+
+config SENSOR_OV7251_MIPI
+	bool "use ov7251_mipi driver"
+	default n
+
+config SENSOR_GC1084_MIPI
+	bool "use gc1084_mipi driver"
+	default n
+
+config SENSOR_GC1084_MIPI_USE_SAME_TWI
+	bool "use gc1084_mipi use same twi and work together"
+	depends on SENSOR_GC1084_MIPI
+	default n
+
+
+choice
+	depends on SENSOR_GC1084_MIPI
+		prompt "gc1084 fps chioce"
+		default GC1084_30FPS
+config SENSOR_HIGH_FPS
+	bool "use sensor high frame rate mode"
+
+config GC1084_30FPS
+	bool "gc1084 720p30fps"
+
+config GC1084_15FPS
+	bool "gc1084 720p15fps"
+
+endchoice

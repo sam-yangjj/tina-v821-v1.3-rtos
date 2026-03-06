@@ -1,0 +1,17 @@
+menu "DMA Devices"
+
+config DRIVERS_DMA
+    bool "enable dma driver"
+        default y
+
+config DRIVERS_NDMA
+    bool "enable ndma driver"
+	depends on DRIVERS_DMA
+        default y if ARCH_SUN300IW1
+
+config HAL_TEST_DMA
+    bool "enable dma hal APIs test command"
+	depends on DRIVERS_DMA
+        default n
+
+endmenu

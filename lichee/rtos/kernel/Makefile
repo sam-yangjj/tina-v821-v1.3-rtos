@@ -1,0 +1,2 @@
+obj-$(CONFIG_KERNEL_FREERTOS_PLUS_POSIX) += Posix/
+obj-$(CONFIG_FREERTOS_V10_4_3) += FreeRTOS-orig/

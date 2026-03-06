@@ -1,0 +1,1 @@
+obj-$(CONFIG_ARCH_CPU_E907) += e907/

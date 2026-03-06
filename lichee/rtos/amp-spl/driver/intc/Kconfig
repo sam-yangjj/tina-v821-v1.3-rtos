@@ -1,0 +1,22 @@
+menuconfig IRQCHIP_USED
+	def_bool y
+	prompt "intc used"
+
+if IRQCHIP_USED
+choice IRQCHIP_IP
+	prompt "Sunxi irqchip to use"
+config CLIC_USED
+	bool
+	prompt "clic used"
+endchoice
+
+config IRQ_SOUCE_COUNT
+	int "irq source count"
+	default 256
+
+if CLIC_USED
+config RISCV_CLIC_BASE
+	hex "riscv clis reg base"
+	default 0
+endif
+endif

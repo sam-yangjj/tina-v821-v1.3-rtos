@@ -1,0 +1,185 @@
+menuconfig COMPONENTS_AMP_APP
+	bool "AMP Application"
+	default n
+	help
+	  Enable some applications which is used on AMP situation.
+	  Some of them is based on OpenAMP framework.
+
+if COMPONENTS_AMP_APP
+
+menuconfig COMPONENTS_AMP_HW_WATCHDOG
+	bool "AMP Hardware Watchdog"
+	default n
+	help
+	  When we use the hardware watchdog on AMP, we don't need to init watchdog.
+	  We only need to setup the timeout of watchdog timer and feed watchdog.
+	  If you want feed watchdog and setup the timeout on your private code,
+	  you need to disable this configuration.
+
+if COMPONENTS_AMP_HW_WATCHDOG
+
+config AMP_HW_WATCHDOG_TIMEOUT
+	int "The Timeout of AMP Hardware Watchdog(unit: second)"
+	default 2
+
+config AMP_HW_WATCHDOG_FEED_INTERVAL
+	int "The Interval to Feed AMP Hardware Watchdog(unit: ms)"
+	default 100
+
+config AMP_HW_WATCHDOG_THREAD_PRIORITY
+	int "The Thread Priority to Feed AMP Hardware Watchdog"
+	default 31
+
+endif #COMPONENTS_AMP_HW_WATCHDOG
+
+menuconfig COMPONENTS_AMP_USER_MEMORY
+	bool "AMP User Memory"
+	default n
+	select AMP_USER_MEMORY_0
+	help
+	  AMP User Memory for remoteproc(slave).
+	  Currently it only support loading custom data form partition.
+
+if COMPONENTS_AMP_USER_MEMORY
+
+config DUMP_ALL_AMP_USER_MEMORY_INFO
+	bool "Dump All AMP User Memory Information after System Starting"
+	default n
+
+config AMP_USER_MEMORY_DT_NODE_NAME_PREFIX
+	string "AMP User Memory Device Tree Node Name Prefix"
+	default "e907_user_mem" if ARCH_RISCV
+	default "dsp_user_mem" if ARCH_DSP
+
+config AMP_USER_MEMORY_0
+	bool "Enable AMP User Memory 0"
+	default y
+
+config AMP_USER_MEMORY_1
+	bool "Enable AMP User Memory 1"
+	default n
+
+config AMP_USER_MEMORY_2
+	bool "Enable AMP User Memory 2"
+	default n
+
+config AMP_USER_MEMORY_3
+	bool "Enable AMP User Memory 3"
+	default n
+
+endif #COMPONENTS_AMP_USER_MEMORY
+
+menuconfig COMPONENTS_AMP_USER_RESOURCE
+	bool "AMP User Resource"
+	default n
+	select AMP_USER_RESOURCE_0
+	help
+	  AMP User Resource for remoteproc(slave).
+	  Currently it only support loading custom data form partition.
+
+if COMPONENTS_AMP_USER_RESOURCE
+
+config AMP_USER_RESOURCE_0
+	bool "Enable AMP User Resource 0"
+	default y
+
+if AMP_USER_RESOURCE_0
+
+config AMP_USER_RESOURCE_0_PARTITION_NAME
+	string "AMP User Resource 0 Partition Name"
+	default "riscv0"
+
+config AMP_USER_RESOURCE_0_DATA_LEN
+	int "AMP User Resource 0 Data Length"
+	default 256
+
+endif
+
+config AMP_USER_RESOURCE_1
+	bool "Enable AMP User Resource 1"
+	default n
+
+if AMP_USER_RESOURCE_1
+
+config AMP_USER_RESOURCE_1_PARTITION_NAME
+	string "AMP User Resource 1 Partition Name"
+	default "riscv1"
+
+config AMP_USER_RESOURCE_1_DATA_LEN
+	int "AMP User Resource 1 Data Length"
+	default 256
+
+endif
+
+config AMP_USER_RESOURCE_2
+	bool "Enable AMP User Resource 2"
+	default n
+
+if AMP_USER_RESOURCE_2
+
+config AMP_USER_RESOURCE_2_PARTITION_NAME
+	string "AMP User Resource 2 Partition Name"
+	default "riscv2"
+
+config AMP_USER_RESOURCE_2_DATA_LEN
+	int "AMP User Resource 2 Data Length"
+	default 256
+
+endif
+
+config AMP_USER_RESOURCE_3
+	bool "Enable AMP User Resource 3"
+	default n
+
+if AMP_USER_RESOURCE_3
+
+config AMP_USER_RESOURCE_3_PARTITION_NAME
+	string "AMP User Resource 3 Partition Name"
+	default "riscv3"
+
+config AMP_USER_RESOURCE_3_DATA_LEN
+	int "AMP User Resource 3 Data Length"
+	default 256
+
+endif
+
+endif #COMPONENTS_AMP_USER_RESOURCE
+
+menuconfig COMPONENTS_AMP_TIMESTAMP
+	bool "AMP Timestamp"
+	default n
+	select AMP_TS_DEV_0
+	help
+	  Allwinner AMP timestamp component, it provide timestamp
+	  with same timebase on AMP situation.
+
+if COMPONENTS_AMP_TIMESTAMP
+
+config AMP_TS_DEV_0
+	bool "Enable AMP Timestamp Device 0"
+	default y
+
+if AMP_TS_DEV_0
+
+config AMP_TS_DEV_0_COUNTER_REG_ADDR
+	hex "AMP Timestamp Device 0 Counter Register Base Address"
+	default 0
+
+config AMP_TS_DEV_0_COUNT_FREQ
+	int "AMP Timestamp Device 0 Count Frequency(unit: Hz)"
+	default 24000000
+
+config AMP_TS_DEV_0_COUNTER_TYPE
+	int "AMP Timestamp Device 0 Counter Type"
+	default 0
+
+config AMP_TS_TEST_CMD
+	bool "AMP Timestamp Test cmd"
+	default n
+
+endif
+
+endif #COMPONENTS_AMP_TIMESTAMP
+
+endif #COMPONENTS_AMP_APP
+

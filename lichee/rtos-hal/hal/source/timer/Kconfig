@@ -1,0 +1,74 @@
+menu "TIMER Devices"
+
+config DRIVERS_TIMER
+    bool "enable timer driver"
+        default y
+
+config DRIVERS_TIMER_AVS
+    bool "enable avs timer driver"
+        default n
+
+config DRIVERS_WAKEUP_TIMER
+    bool "enable timer wakeup driver"
+        default n
+
+config DRIVERS_HTIMER
+    bool "enable hrtimer driver"
+        default n
+choice
+    prompt "Configure htimer clk source"
+	depends on DRIVERS_HTIMER
+	default HTIMER_CLK_SOURCE_BY_CCU
+
+config HTIMER_CLK_SOURCE_BY_CCU
+    bool "Configure hrtimer clock source by ccu"
+
+config HTIMER_CLK_SOURCE_BY_TIMER
+    bool "Configure hrtimer clock source by prcm"
+
+endchoice
+
+choice
+    prompt "Configure htimer clk"
+	depends on HTIMER_CLK_SOURCE_BY_TIMER && !ARCH_SUN300IW1
+	default HTIMER_CLK_100MHZ
+
+config HTIMER_CLK_200MHZ
+    bool "200MHZ"
+
+config HTIMER_CLK_100MHZ
+    bool "100MHZ"
+
+config HTIMER_CLK_50MHZ
+    bool "50MHZ"
+
+config HTIMER_CLK_25MHZ
+    bool "25MHZ"
+
+endchoice
+
+choice
+    prompt "Configure htimer clk"
+	depends on HTIMER_CLK_SOURCE_BY_TIMER && ARCH_SUN300IW1
+	default HTIMER_CLK_96MHZ
+
+config HTIMER_CLK_192MHZ
+    bool "192MHZ"
+
+config HTIMER_CLK_96MHZ
+    bool "96MHZ"
+
+config HTIMER_CLK_64MHZ
+    bool "64MHZ"
+
+config HTIMER_CLK_48MHZ
+    bool "48MHZ"
+
+endchoice
+
+
+config HAL_TEST_TIMER
+	bool "enable timer hal APIs test command"
+		depends on DRIVERS_TIMER || DRIVERS_HTIMER
+		default n
+endmenu

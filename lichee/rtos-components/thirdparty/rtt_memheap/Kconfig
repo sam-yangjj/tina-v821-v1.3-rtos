@@ -1,0 +1,25 @@
+config COMPONENT_RTT_MEMHEAP
+	bool "RT-Thread heap memory manager"
+	default n
+	help
+	  This heap memory manager is extracted form RT-Thread memheap module.
+	  It provide similar APIs to manage memory.
+
+if COMPONENT_RTT_MEMHEAP
+
+choice
+prompt "Memory management strategy"
+default RTT_MEMHEAP_USE_SCHEDULER_LOCK
+ help
+   Choose the memory management strategy for RT-Thread heap memory manager.
+config RTT_MEMHEAP_USE_MUTEX_LOCK
+	bool "Use mutex lock"
+	help
+	  Use mutex lock for memory management.
+config RTT_MEMHEAP_USE_SCHEDULER_LOCK
+	bool "Use scheduler lock"
+	help
+	  Use task scheduling for memory management.
+endchoice
+
+endif

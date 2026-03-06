@@ -1,0 +1,55 @@
+menu "AW Flash read Compenents"
+
+config COMPONENTS_AW_FLASH_READ
+    bool "Tina Flash read"
+    depends on ARCH_SUN300IW1
+    default n
+    help
+        If unsure, say N.
+
+if COMPONENTS_AW_FLASH_READ
+
+choice COMPONENTS_AW_FLASH_READ_TYPE
+	prompt "Select load storage type"
+	default COMPONENTS_AW_FLASH_READ_SPINOR
+
+	config COMPONENTS_AW_FLASH_READ_SPINOR
+		bool "spinor"
+	config COMPONENTS_AW_FLASH_READ_EMMC
+		bool "emmc"
+	config COMPONENTS_AW_FLASH_READ_SDNAND
+		bool "sdnand"
+endchoice
+
+config COMPONENTS_AW_FLASH_WRITE
+	bool "Flash Write Support"
+	depends on COMPONENTS_AW_FLASH_READ_SPINOR
+	default n
+
+config COMPONENTS_AW_FLASH_GPT_OFFSET
+	int "Flash gpt offset"
+	default 2016
+
+config COMPONENTS_AW_FLASH_BOOTPKG_OFFSET
+	int "Flash bootpackage offset"
+	default 128
+
+config COMPONENTS_AW_FLASH_DEBUG
+	bool "Flash Read Debug"
+	default n
+	help
+		If unsure, say N.
+
+config COMPONENTS_AW_FLASH_USE_HWLOCK
+	bool "Tina Flash Use Hwlock"
+	depends on COMPONENTS_AW_FLASH_READ_SPINOR
+	default n
+	help
+		If unsure, say N.
+
+config COMPONENTS_AW_FLASH_HWLOCK_IDX
+	int "Tina Flash Use Hwlock Idx"
+	depends on COMPONENTS_AW_FLASH_USE_HWLOCK
+	default 16
+endif
+endmenu

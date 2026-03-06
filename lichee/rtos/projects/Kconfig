@@ -1,0 +1,191 @@
+choice
+    prompt "Configure Application"
+    default PROJECT_R328S1_EVB1_DEMO
+
+config PROJECT_V821_E907_VER1
+	bool "v821 e907 ver1 system"
+	select PROJECT_V821_E907
+	---help---
+		v821 e907 ver1 system
+
+config PROJECT_V821_E907_IPC
+	bool "v821 e907 ipc system"
+	select PROJECT_V821_E907
+	---help---
+		v821 e907 ipc system
+
+config PROJECT_V821_E907_PERF2
+	bool "v821 e907 perf2 system"
+	select PROJECT_V821_E907
+	---help---
+		v821 e907 perf2 system
+
+config PROJECT_V821_E907_AIGLASS
+	bool "v821 e907 aiglass  system"
+	select PROJECT_V821_E907
+	---help---
+		v821 e907 aiglass system
+
+config PROJECT_V821_E907_PERF2_FASTBOOT
+	bool "v821 e907 perf2 fastboot system"
+	select PROJECT_V821_E907
+	---help---
+		v821 e907 perf2 fastboot system
+
+config PROJECT_V821_E907_QA_WXX
+	bool "v821 e907 qa_wxx system"
+	select PROJECT_V821_E907
+	---help---
+		v821 e907 qa_wxx system(etf)
+
+config PROJECT_V821_E907_QA_EXX
+	bool "v821 e907 qa_exx system"
+	select PROJECT_V821_E907
+	---help---
+		v821 e907 qa_exx system(etf)
+
+config PROJECT_V821_E907_QA_XXX
+	bool "v821 e907 qa_xxx system"
+	select PROJECT_V821_E907
+	---help---
+		v821 e907 qa_xxx system(etf)
+
+config PROJECT_V821_E907_PERF2B_FASTBOOT
+    bool "v821_e907 perf2b_fastboot system"
+    select PROJECT_V821_E907
+    ---help---
+        the v821_e907 perf2b_fastboot system
+
+config PROJECT_V821_E907_PERF2B
+    bool "v821_e907 perf2b system"
+    select PROJECT_V821_E907
+    ---help---
+        the v821_e907 perf2b system
+
+config PROJECT_V821_E907_SC1745V
+    bool "v821_e907 sc1745v system"
+    select PROJECT_V821_E907
+    ---help---
+        the v821_e907 sc1745v system
+
+config PROJECT_V821_E907_PERF5
+    bool "v821_e907 perf5 system"
+    select PROJECT_V821_E907
+    ---help---
+        the v821_e907 perf5 system
+
+config PROJECT_V821_E907_TUYA_FASTBOOT
+    bool "v821_e907 tuya_fastboot system"
+    select PROJECT_V821_E907
+    ---help---
+        the v821_e907 tuya_fastboot system
+
+config PROJECT_V821_E907_PERF2B_LOWPOWER
+    bool "v821_e907 perf2b_lowpower system"
+    select PROJECT_V821_E907
+    ---help---
+        the v821_e907 perf2b_lowpower system
+
+config PROJECT_V821_E907_AVAOTA_F1
+    bool "v821_e907 avaota_f1 system"
+    select PROJECT_V821_E907
+    ---help---
+        the v821_e907 avaota_f1 system
+
+endchoice
+
+config PROJECT_V821_E907
+    bool
+    select SUNXI_CHIPS
+
+config FPGA_PLATFORM
+    bool "Run on fpga"
+    default n
+
+config PROJECT_TESTCASE
+    bool "Project Testcase"
+    default n
+
+config NON_OS
+    bool "non os demo"
+    default n
+    depends on PROJECT_T113_S3P_C906_EVB1_AUTO_NON_OS
+
+if ARCH_SUN300IW1
+
+choice
+    prompt "Configure chip model"
+    default CHIP_V821
+
+config CHIP_V821
+	bool "v821"
+	---help---
+		use v821
+
+config CHIP_V821B
+	bool "v821b"
+	---help---
+		usb v821b
+
+endchoice
+
+
+menuconfig WAIT_SPIF_CONTROLLER
+    bool "wait for spif controller"
+    default n
+
+if WAIT_SPIF_CONTROLLER
+config SPIF_WAIT_INDEX
+    int "spif wait rtc data index"
+    default 0
+config SPIF_WAIT_BIT
+    int "spif wait rtc data bit"
+    default 2
+endif
+
+menuconfig PRELOAD_RAMDISK
+    bool "load kernel ramdisk"
+    depends on COMPONENTS_AW_FLASH_READ
+    depends on RPMSG_NOTIFY
+    default n
+
+if PRELOAD_RAMDISK
+config RAMDISK_LOADADDR
+    hex "kernel ramdisk load address"
+config RAMDISK_PARTITION_SIZE
+    hex "kernel ramdisk compress size"
+
+config RAMDISK_DECOMPRESS_ADDR
+    hex "kernel ramdisk decompress address"
+config RAMDISK_DECOMPRESS_SIZE
+    hex "kernel ramdisk decompress size"
+endif
+endif
+
+menuconfig PRELOAD_ROOTFS
+    bool "load kernel rootfs"
+    depends on !PRELOAD_RAMDISK
+    depends on COMPONENTS_AW_FLASH_READ
+    depends on RPMSG_NOTIFY
+    depends on WAIT_SPIF_CONTROLLER
+    depends on ARCH_SUN300IW1
+    depends on COMPONENTS_SQUASHFS
+    default n
+
+if PRELOAD_ROOTFS
+config PRINT_ROOTFS_LOADTIME
+    bool "print load time"
+    default n
+config ROOTFS_LOADADDR
+    hex "rootfs load address"
+config ROOTFS_PARTITION_SIZE
+    hex "rootfs load address size"
+config ROOTFS_LOAD_FILES
+    string "rootfs load file list. e.g. liba libc"
+    default "lib/libc.so lib/libstdc++.so.6.0.28 lib/librt_media.so lib/libawion.so,lib/libgcc_s.so.1 bin/busybox bin/demo_video_in etc/ld-musl-riscv32.path files/init"
+endif
+
+config PRELOAD_ISP_PARAM
+    bool "load isp param from flash"
+    depends on COMPONENTS_AW_FLASH_READ
+    default n

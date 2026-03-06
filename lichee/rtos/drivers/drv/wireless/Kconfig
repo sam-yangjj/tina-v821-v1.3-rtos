@@ -1,0 +1,54 @@
+menuconfig DRIVERS_WIRELESS
+	default n
+	bool "wireless devices"
+
+if DRIVERS_WIRELESS
+
+config DRIVERS_V821_USE_SIP_WIFI
+	bool "enable smac mode"
+	default n
+	depends on ARCH_SUN300IW1P1
+	help
+		linux use phy.a on smac mode
+
+source drivers/drv/wireless/xradio/Kconfig
+
+choice XRADIO_WLAN_PHY_COMP_TYPE
+	default XRADIO_WLAN_PHY_COMP_USE_LIB
+	prompt "Xradio wifi use phy.a or phy.bin"
+	depends on DRIVERS_V821_USE_SIP_WIFI || DRIVER_V821
+	help
+		Xradio wifi use phy.a or phy.bin.
+
+config XRADIO_WLAN_PHY_COMP_USE_LIB
+	bool "Xradio wifi use phy.a"
+	help
+		Xradio wifi use phy.a.
+
+config XRADIO_WLAN_PHY_COMP_USE_BIN
+	bool "Xradio wifi use phy.bin"
+	select WLAN_PHY_CALL_BY_RTOS
+	select WLAN_PHY_BIN_ENABLE
+	help
+		Xradio wifi use phy.bin.
+endchoice
+
+if XRADIO_WLAN_PHY_COMP_USE_LIB
+choice XRADIO_WLAN_PHY_LIB_LINK
+	default XRADIO_WLAN_PHY_LIB_LINK_V821
+	prompt "Link xradio which wifi phy.a"
+	depends on XRADIO_WLAN_PHY_COMP_USE_LIB
+	depends on DRIVERS_V821_USE_SIP_WIFI || DRIVER_V821
+	help
+		Link xradio wifi phy.a: V821 or V821B.
+config XRADIO_WLAN_PHY_LIB_LINK_V821
+	bool "Link phy_v821.a"
+	help
+		Link phy_v821.a.
+config XRADIO_WLAN_PHY_LIB_LINK_V821B
+	bool "Link phy_v821b.a"
+	help
+		Link phy_v821b.a.
+endchoice
+endif
+endif #DRIVERS_WIRELESS

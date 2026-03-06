@@ -1,0 +1,48 @@
+menu "SUNXI RPC Support"
+
+config COMPONENTS_AW_RPC
+	tristate "Sunxi Rpc support for Allwinner SoCs"
+	depends on DRIVERS_MSGBOX
+
+config COMPONENTS_AW_RPC_CHANNEL
+	int "Sunxi Rpc Msgbox Channel"
+	depends on COMPONENTS_AW_RPC
+	default 1
+
+config COMPONENTS_AW_RPC_CLIENT_MEMBLK_SIZE
+	int "Sunxi Rpc Client Memblk Size"
+	depends on COMPONENTS_AW_RPC
+	default 1024
+
+config COMPONENTS_AW_RPC_CLIENT
+	bool "Sunxi Rpc Client support for Allwinner SoCs"
+	depends on COMPONENTS_AW_RPC
+
+config COMPONENTS_AW_RPC_CLIENT_MAX_MEMBLK
+	int "Sunxi Rpc Client Max Memblk"
+	depends on COMPONENTS_AW_RPC_CLIENT
+	default 16
+
+config COMPONENTS_AW_RPC_SERVER
+	bool "Sunxi Rpc Server support for Allwinner SoCs"
+	depends on COMPONENTS_AW_RPC
+
+config COMPONENTS_AW_RPC_SERVER_MAX_CLASS
+	int "Sunxi Rpc Server Max Class"
+	depends on COMPONENTS_AW_RPC_SERVER
+	default 4
+
+config COMPONENTS_AW_RPC_SERVER_MAX_THREAD
+	int "Sunxi Rpc Server Max Thread"
+	depends on COMPONENTS_AW_RPC_SERVER
+	default 4
+
+config COMPONENTS_AW_RPC_DEBUG
+	bool "Sunxi Rpc Debug"
+	default n
+
+config COMPONENTS_AW_RPC_TEST_CMD
+	bool "Export Sunxi Rpc Test Cmd"
+	default n
+
+endmenu

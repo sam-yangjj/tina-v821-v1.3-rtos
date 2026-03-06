@@ -1,0 +1,2 @@
+obj-$(CONFIG_COMPONENTS_PAHOMQTT) += paho_mqtt/
+obj-$(CONFIG_COMPONENTS_COREMQTT_2_3_1) += coreMQTT-2.3.1/

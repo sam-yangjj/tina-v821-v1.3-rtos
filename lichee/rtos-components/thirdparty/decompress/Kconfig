@@ -1,0 +1,24 @@
+menuconfig COMPONENTS_COMPRESS
+	bool "Compress Support"
+	default n
+
+if COMPONENTS_COMPRESS
+config COMPONENTS_COMPRESS_GZIP
+	bool "Gzip Compress"
+	default n
+config COMPONENTS_COMPRESS_LZMA
+	bool "Lzma Compress"
+	default n
+config COMPONENTS_COMPRESS_BZIP2
+	bool "Bzip2 Compress"
+	default n
+config COMPONENTS_COMPRESS_XZ
+	bool "Xz Compress"
+	default n
+config COMPONENTS_COMPRESS_LZO
+	bool "LZO Compress"
+	default n
+config COMPONENTS_COMPRESS_LZ4
+	bool "LZ4 Compress"
+	default n
+endif

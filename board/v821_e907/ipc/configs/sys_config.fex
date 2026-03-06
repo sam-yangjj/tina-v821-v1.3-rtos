@@ -1,0 +1,70 @@
+;sunxi platform application
+;---------------------------------------------------------------------------------------------------------
+; 说明： 脚本中的字符串区分大小写，用户可以修改"="后面的数值，但是不要修改前面的字符串
+; 描述gpio的形式：Port:端口+组内序号<功能分配><内部电阻状态><驱动能力><输出电平状态>
+;---------------------------------------------------------------------------------------------------------
+
+;---------------------------------------------------------------------------------
+; version:版本1.00
+; machine:板级文件名
+;---------------------------------------------------------------------------------
+[product]
+version = "100"
+machine = "fpga"
+
+;----------------------------------------------------------------------------------
+;twi configuration
+;[twix]
+;twi_sck    scl的GPIO配置
+;twi_sda    sda的GPIO配置
+;----------------------------------------------------------------------------------
+;[twi1]
+;twi_sck  = port:PA01<3><1><default><default>
+;twi_sda  = port:PA02<3><1><default><default>
+
+;----------------------------------------------------------------------------------
+; 说明：使用CONFIG_CLI_UART_PORT选定console口
+;[uartx]
+;uart_tx     |串口发送的GPIO配置|
+;uart_rx     |串口接收的GPIO配置|
+;----------------------------------------------------------------------------------
+[uart3]
+uart_tx   = port:PL02<3><1><default><default>
+uart_rx   = port:PL03<3><1><default><default>
+
+[pwm8]
+pwm_used        = 1
+pwm_positive    = port:PD18<4><0><0><default>
+
+[pwm9]
+pwm_used        = 1
+pwm_positive    = port:PD19<4><0><0><default>
+
+[rtc]
+extern_fre      = 32768
+
+[dram_para]
+dram_clk            = 520
+dram_type           = 2
+dram_zq             = 0x7b7bf9
+dram_odt_en         = 0x00
+dram_para1          = 0x000000d2
+dram_para2          = 0x00400000
+dram_mr0            = 0x00000E73
+dram_mr1            = 0x02
+dram_mr2            = 0x0
+dram_mr3            = 0x0
+dram_tpr0           = 0x00469991
+dram_tpr1           = 0x0131A10C
+dram_tpr2           = 0x00056040
+dram_tpr3           = 0xB4787896
+dram_tpr4           = 0x0
+dram_tpr5           = 0x48484848
+dram_tpr6           = 0x48
+dram_tpr7           = 0x1621121e
+dram_tpr8           = 0x0
+dram_tpr9           = 0x0
+dram_tpr10          = 0x00000000
+dram_tpr11          = 0x00000000
+dram_tpr12          = 0x00000000
+dram_tpr13          = 0xb4006101

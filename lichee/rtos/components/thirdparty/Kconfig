@@ -1,0 +1,4 @@
+source components/thirdparty/common/Kconfig
+source components/thirdparty/console/Kconfig
+source components/thirdparty/cplusplus/Kconfig
+source components/thirdparty/vfs/Kconfig

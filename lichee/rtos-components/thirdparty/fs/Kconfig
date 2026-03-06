@@ -1,0 +1,13 @@
+config COMPONENTS_SQUASHFS
+	bool "Enable SquashFS filesystem support"
+	help
+	  This provides support for reading images from SquashFS filesystem.
+	  Squashfs is a compressed read-only filesystem for Linux.
+	  It uses zlib, lz4, lzo, or xz compression to compress files, inodes
+	  and directories.
+
+if COMPONENTS_SQUASHFS
+config COMPONENTS_SQUASHFS_CMD
+	bool "export squashfs test cmd"
+	default n
+endif

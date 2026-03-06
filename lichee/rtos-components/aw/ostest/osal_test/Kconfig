@@ -1,0 +1,75 @@
+menuconfig COMPONENTS_OSTEST_OSAL
+    bool "Osal Testcase"
+
+if COMPONENTS_OSTEST_OSAL
+
+config COMPONENTS_OSTEST_OSAL_TIME
+    bool "Time Testcase"
+    default n
+
+if COMPONENTS_OSTEST_OSAL_TIME
+config COMPONENTS_OSTEST_OSAL_TIME_ACCURACY
+    int "Time accuracy, unit us"
+    default 1
+    help
+      This precision is the minimum delay time that the delay API can achieve.
+      It is used for every platform has different accuracy.
+endif
+
+config COMPONENTS_OSTEST_OSAL_TIMER
+    bool "Timer Testcase"
+    default n
+
+config COMPONENTS_OSTEST_OSAL_SEM
+    bool "Sem Testcase"
+    default n
+
+config COMPONENTS_OSTEST_OSAL_QUEUE
+    bool "Queue Testcase"
+    default n
+
+config COMPONENTS_OSTEST_OSAL_THREAD
+    bool "Thread Testcase"
+    default n
+
+config COMPONENTS_OSTEST_OSAL_WAITQUEUE
+    bool "Waitqueue Testcase"
+    default n
+
+config COMPONENTS_OSTEST_OSAL_WORKQUEUE
+    bool "Workqueue Testcase"
+    default n
+
+config COMPONENTS_OSTEST_OSAL_CACHE
+    bool "Cache Testcase"
+    default n
+
+config COMPONENTS_OSTEST_OSAL_MUTEX
+    bool "Mutex Testcase"
+    default n
+
+config COMPONENTS_OSTEST_OSAL_CFG
+    bool "Cfg Testcase"
+    default n
+
+config COMPONENTS_OSTEST_OSAL_MEM
+    bool "Mem Testcase"
+    default n
+
+config COMPONENTS_OSTEST_OSAL_EVENT
+    bool "Event Testcase"
+    default n
+
+config COMPONENTS_OSTEST_OSAL_ATOMIC
+    bool "Atomic Testcase"
+    default n
+	help
+		This testcase include spinlock & critical
+
+config COMPONENTS_OSTEST_OSAL_INTERRUPT
+    bool "Interrupt Testcase"
+    default n
+	help
+		This testcase include irq & interrupt
+
+endif

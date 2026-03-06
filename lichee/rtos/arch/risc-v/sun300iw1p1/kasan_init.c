@@ -1,0 +1,129 @@
+/*
+ * Copyright (c) 2019-2025 Allwinner Technology Co., Ltd. ALL rights reserved.
+ *
+ * Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+ * the people's Republic of China and other countries.
+ * All Allwinner Technology Co.,Ltd. trademarks are used with permission.
+ *
+ * DISCLAIMER
+ * THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+ * IF YOU NEED TO INTEGRATE THIRD PARTY’S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+ * IN ALLWINNERS’SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+ * ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+ * ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+ * COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+ * YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY’S TECHNOLOGY.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+ * PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+ * WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+ * THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+ * OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+ * IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+ * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+ * NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+ * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+ * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+ * OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+/*
+* Copyright (c) 2025-2029 Allwinner Technology Co., Ltd. ALL rights reserved.
+*
+* Allwinner is a trademark of Allwinner Technology Co.,Ltd., registered in
+* the the People's Republic of China and other countries.
+* All Allwinner Technology Co.,Ltd. trademarks are used with permission.
+*
+* DISCLAIMER
+* THIRD PARTY LICENCES MAY BE REQUIRED TO IMPLEMENT THE SOLUTION/PRODUCT.
+* IF YOU NEED TO INTEGRATE THIRD PARTY’S TECHNOLOGY (SONY, DTS, DOLBY, AVS OR MPEGLA, ETC.)
+* IN ALLWINNERS’SDK OR PRODUCTS, YOU SHALL BE SOLELY RESPONSIBLE TO OBTAIN
+* ALL APPROPRIATELY REQUIRED THIRD PARTY LICENCES.
+* ALLWINNER SHALL HAVE NO WARRANTY, INDEMNITY OR OTHER OBLIGATIONS WITH RESPECT TO MATTERS
+* COVERED UNDER ANY REQUIRED THIRD PARTY LICENSE.
+* YOU ARE SOLELY RESPONSIBLE FOR YOUR USAGE OF THIRD PARTY’S TECHNOLOGY.
+*
+*
+* THIS SOFTWARE IS PROVIDED BY ALLWINNER"AS IS" AND TO THE MAXIMUM EXTENT
+* PERMITTED BY LAW, ALLWINNER EXPRESSLY DISCLAIMS ALL WARRANTIES OF ANY KIND,
+* WHETHER EXPRESS, IMPLIED OR STATUTORY, INCLUDING WITHOUT LIMITATION REGARDING
+* THE TITLE, NON-INFRINGEMENT, ACCURACY, CONDITION, COMPLETENESS, PERFORMANCE
+* OR MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+* IN NO EVENT SHALL ALLWINNER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+* NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS, OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+* ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+* OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
+
+#include <kasan_rtos.h>
+
+#if 0
+/* MMU and PMP, if exist, require aligned addrresses */
+#define SHADOW_ALIGN_SIZE   (CONFIG_PMP_ADDR_ALIGN)
+#define IS_ALIGNED(x, a)  (((x) & ((typeof(x))(a) - 1)) == 0)
+#if (!IS_ALIGNED(CONFIG_ARCH_START_ADDRESS + CONFIG_ARCH_MEM_LENGTH - KASAN_SHADOW_SIZE, SHADOW_ALIGN_SIZE))
+#error "KASAN_SHADOW_START does not align to SHADOW_ALIGN_SIZE!"
+#endif
+#if (!IS_ALIGNED(CONFIG_ARCH_START_ADDRESS + CONFIG_ARCH_MEM_LENGTH, SHADOW_ALIGN_SIZE))
+#error "KASAN_SHADOW_END does not align to SHADOW_ALIGN_SIZE!"
+#endif
+#endif
+extern void rt_malloc_small_sethook(void (*hook)(void *ptr, uint32_t size));
+extern void rt_free_small_sethook(void (*hook)(void *ptr, uint32_t size));
+extern void kasan_enable_report(void);
+
+static void kasan_shadow_early_init_nommu(void)
+{
+	unsigned long start;
+	unsigned long end;
+	unsigned long temp;
+	unsigned long len = sizeof(unsigned long);
+
+	end = KASAN_SHADOW_END;
+	start = KASAN_SHADOW_START;
+
+	for (temp = start; temp < end; temp += len) {
+		*(unsigned long *)temp = 0;
+	}
+
+	dsb();
+	isb();
+}
+
+void kasan_early_init(void)
+{
+	kasan_shadow_early_init_nommu();
+}
+
+void kasan_init(void)
+{
+	/* set kasan hook */
+	rt_malloc_small_sethook(rt_malloc_small_func_hook);
+	rt_free_small_sethook(rt_free_small_func_hook);
+
+	kasan_init_report();
+	kasan_enable_report();
+}
+
+typedef void (*ctor_fn_t)(void);
+void do_ctors(void)
+{
+	extern long __ctors_start__;
+	extern long __ctors_end__;
+	ctor_fn_t *fn = (ctor_fn_t *)&__ctors_start__;
+	unsigned long addr;
+
+	for (; fn < (ctor_fn_t *)&__ctors_end__; fn++) {
+		addr = (unsigned long)(*fn);
+
+		if ((addr >= CONFIG_ARCH_START_ADDRESS) && (addr < KASAN_SHADOW_START)) {
+			(*fn)();
+		}
+	}
+}

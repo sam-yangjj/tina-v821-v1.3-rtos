@@ -1,0 +1,14 @@
+menu "Newlibc Components Support"
+
+config ARCH_MEMCPY_OPTIMIZE
+    bool "Tina RTOS Memcpy Optimize"
+    default y
+
+config HEAP_TRACE
+    bool "heap trace"
+    default n
+
+config ARCH_STRING_OPTIMIZE
+    bool "Tina RTOS string Optimize"
+    default n
+endmenu

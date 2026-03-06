@@ -1,0 +1,5 @@
+source components/aw/watchpoint/Kconfig
+source components/aw/memleak/Kconfig
+source components/aw/bluetooth/Kconfig
+source components/aw/newlibc/Kconfig
+source components/aw/kasan/Kconfig

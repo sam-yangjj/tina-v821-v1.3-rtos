@@ -1,0 +1,14 @@
+menuconfig PIN_USED
+	bool "pin used"
+	default y
+
+if PIN_USED
+choice GPIO_VERSION
+	prompt "gpio version"
+	help
+	  selete gpio driver version
+
+config SUNXI_GPIO_V2
+	bool "gpio v2"
+endchoice
+endif

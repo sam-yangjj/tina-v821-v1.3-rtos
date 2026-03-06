@@ -1,0 +1,34 @@
+menu "Rpcfs Components Support"
+
+config COMPONENTS_RPCFS
+	bool "Tina RTOS Rpcfs"
+	default n
+	depends on COMPONENTS_AW_RPC_CLIENT
+	help
+	  Tina RTOS Rpcfs support.
+
+config COMPONENTS_RPCFS_AUTO_MOUNT
+	bool "Tina RTOS Rpcfs Auto Mount"
+	default y
+	depends on COMPONENTS_RPCFS
+	help
+	  Tina RTOS Rpcfs Auto Mount Flag.
+
+config COMPONENTS_RPCFS_PATH
+	string "Tina RTOS Rpcfs Mount Path"
+	default "/host"
+	depends on COMPONENTS_RPCFS
+	help
+	  Tina RTOS Rpcfs Mount Path.
+
+config COMPONENTS_RPCFS_DEBUG
+	bool "Tina RTOS Rpcfs Debug Info"
+	default n
+	depends on COMPONENTS_RPCFS
+
+config COMPONENTS_RPCFS_EXPORT_CMD
+	bool "Tina RTOS Rpcfs Export Cmd"
+	default n
+	depends on COMPONENTS_RPCFS
+
+endmenu

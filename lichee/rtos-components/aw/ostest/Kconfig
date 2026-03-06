@@ -1,0 +1,32 @@
+menu "Os Testcase Support"
+
+config COMPONENTS_OSTEST
+    bool "Os Testcase"
+    default n
+    help
+        Tina RTOS Os Testcase support.
+
+if COMPONENTS_OSTEST
+
+config COMPONENTS_OSTEST_JPEGPERF
+    bool "JPEGPERF Testcase"
+    default n
+
+config COMPONENTS_OSTEST_HARDWARE_PERF
+    bool "HARDWARE performance"
+    select DRIVERS_TIMER
+    default n
+
+config COMPONENTS_OSTEST_RTT_MEMHEAP
+    bool "MEMHEAP Testcase"
+    default n
+source "components/common/aw/ostest/fpu_test/Kconfig"
+
+source "components/common/aw/ostest/kernel_test/Kconfig"
+source "components/common/aw/ostest/osal_test/Kconfig"
+source "components/common/aw/ostest/cpp_test/Kconfig"
+source "components/common/aw/ostest/irqnest_test/Kconfig"
+source "components/common/aw/ostest/memheap_test/Kconfig"
+endif
+
+endmenu
