@@ -1,0 +1,11 @@
+*.o
+lichee/rtos/.config
+lichee/rtos/.config.old
+lichee/rtos/.dbuild/pretty/__pycache__/
+lichee/rtos/arch/risc-v/compressed/link.lds
+lichee/rtos/arch/risc-v/compressed/orig_data
+lichee/rtos/arch/risc-v/compressed/piggy_data
+lichee/rtos/arch/risc-v/compressed/zImage
+lichee/rtos/build/
+lichee/rtos/include/generated/
+lichee/rtos/tools/Xuantie-900-gcc-elf-newlib-x86_64-V2.10.1/
